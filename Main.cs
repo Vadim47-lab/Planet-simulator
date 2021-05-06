@@ -111,6 +111,7 @@ public class Main : MonoBehaviour
         GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.4f, 0.4f), 0, y * 0.5f + Random.Range(-0.4f, 0.4f)), transform.rotation);
         grassFantom[x, y] = plant; // - трава
         grassSum++;
+        //Debug.Log("grassSum = " + grassSum);
     }
 
     private void grassRun()
@@ -148,6 +149,15 @@ public class Main : MonoBehaviour
 
     void Update()
     {
+        exit.onClick.AddListener(Exit);
+        stop.onClick.AddListener(Stop);
+        continue1.onClick.AddListener(Continue);
+        close.onClick.AddListener(Close);
+        plusspeedgame.onClick.AddListener(Plusspeedgame);
+        minusspeedgame.onClick.AddListener(Minusspeedgame);
+        plusgrowthrate.onClick.AddListener(Plusgrowthrate);
+        minusgrowthrate.onClick.AddListener(Minusgrowthrate);
+
         if (Input.GetKeyDown(showMenuKey))
         {
             information.SetActive(true);
