@@ -5,24 +5,35 @@ using Random = UnityEngine.Random;
 
 public class AI_rabbit : MonoBehaviour
 {
-    private float z = 0;
-    private float x = 0;
-    private float y = 0;
-    private int counter = 0;
-    private int xGrass, yGrass;
-    public static float counter2 = 0;
-    public static float sumGrass = 0;
-    public static float Health = 0;
-    public int randomT;
-    public GameObject rabbit;
-    public GameObject game;
+    private float z = 0;//коррдинаты кролика по оси z
+    private float x = 0;//коррдинаты кролика по оси x
+    private float y = 0;//коррдинаты кролика по оси y
+    private int xGrass, yGrass;//коррдинаты травы
+    public static float counter = 0; //колличество кроликов, которое передается в файл Main для дальнейшего вывода на экран
+    public static float counter2 = 0;//колличество кроликов, которое передается в файл Main для дальнейшего вывода на экран
+    public static float sumGrass = 0;//колличество травы, которое передается в файл Main для дальнейшего вывода на экран
+    public static float Health = 0;//колличество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
+    public float health = 0;//колличество здоровья у кролика, которое отображается в inspector в unity
+    public float Sumrabbit = 0;//колличество травы, которое отображается в inspector в unity
+    public float Sumgrass = 0;//колличество кроликов, которое отображается в inspector в unity
+    public int randomT;//мозг кролика
+    public GameObject rabbit;//игровой объект кролик
+    public GameObject game;//пустой игровой объект со скриптом главной логики симулятора
+    [Header("Button")]//название типа элемента в программе (кнопки)
+    public Button plusrabbithealth;//кнопка увеличивающая жизнь кролику
+    public Button minusrabbithealth;//кнопка уменьшающая жизнь кролику
+    public Button pluseatgrass;//кнопка увеличивающая колличество сЪеденной травы
+    public Button minuseatgrass;//кнопка уменьшающая колличество сЪеденной травы
 
     void Start()
     {
+        plusrabbithealth.onClick.AddListener(Plusrabbithealth);
+        minusrabbithealth.onClick.AddListener(Minusrabbithealth);
+        pluseatgrass.onClick.AddListener(Pluseatgrass);
+        minuseatgrass.onClick.AddListener(Minuseatgrass);
         xGrass = Random.Range(0, 99);
         yGrass = Random.Range(0, 99);
-        if (tag == "rabbit") Health = 40;//game.GetComponent<Main>().healthRabbit;
-        //Console.WriteLine(Health);
+        if (tag == "rabbit") Health = 40;
         InvokeRepeating("brain", 0, 1f);
         InvokeRepeating("life", 1f, 1f);
     }
@@ -44,17 +55,43 @@ public class AI_rabbit : MonoBehaviour
         if (grass != null && Health <= 20)
         {
             Destroy(grass);
-            //sumGrass--;
+            if (grass == null) sumGrass--;
+            Console.WriteLine(sumGrass);
             counter++;
             if (counter == 4)
             {
-                Health = 40;//game.GetComponent<Main>().healthRabbit;
+                Health = 40;
                 create();
                 counter = 0;
                 counter2++;
             }
             game.GetComponent<Main>().grass[xRabbit, yRabbit] = null;
         }
+        health = Health;
+        Sumgrass = counter;
+        Sumrabbit = counter2;//для вывода информации в unity в inspector
+    }
+
+    public void Plusrabbithealth()
+    {
+        Health++;
+        if (Health > 40) Health = 40;
+    }
+
+    public void Minusrabbithealth()
+    {
+        Health--;
+        if (Health < 20) Health = 20;
+    }
+
+    public void Pluseatgrass()
+    {
+        counter++;
+    }
+
+    public void Minuseatgrass()
+    {
+        counter--;
     }
 
     private void brain()

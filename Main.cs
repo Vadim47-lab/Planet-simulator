@@ -5,42 +5,42 @@ using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
-    public GameObject[,] grass = new GameObject[100, 100];
-    public GameObject[,] grassFantom = new GameObject[100, 100];
-    GameObject plant;
-    int i, j;
-    public GameObject Grass;
-    public GameObject rabbit5;
-    public GameObject information;
-    public GameObject changeparam;
-    public GameObject help;
-    public static float grassSum = 0;
-    public static float healthRabbit = 0;
-    public Text myText;
-    public Text myText2;
-    public Text Speedgame;
-    public Text growthrateGrass;
-    public Text Healthrabbit;
-    public float grassSpeed = 1f;
+    public GameObject[,] grass = new GameObject[100, 100];//матрица элементов травы
+    public GameObject[,] grassFantom = new GameObject[100, 100];//фантомная матрица элементов травы
+    GameObject plant;//закрытый игровой объект травы
+    int i, j;//элементы для матрицы
+    public GameObject Grass;//игровой объект травы
+    public GameObject rabbit5;//пустой игровой объект со скриптом мозга кролика
+    public GameObject information;//игровой объект в виде панели для отображения и изменения информации объектов симулятора
+    public GameObject help;//игровой объект в виде панели для отображения подсказки о запуске панели информации
+    public static float grassSum = 0;//колличество травы, значение которого берется из скрипта кролика и выводится на экран
+    public static float eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
+    public float speedGame;//скорость игры, которое выводится на экран
+    public float grassSpeed = 1f;//скорость роста травы, которое выводится на экран
     public float time = 1;
-    public float CurrentTime;
-    public float GameSeconds;
-    public float GameMinutes;
-    string StringSecond;
-    string StringMinutes;
-    public Text TextTime;
-    [Header("Button")]
-    public Button exit;
-    public Button stop;
-    public Button continue1;
-    public Button close;
-    public Button plusspeedgame;
-    public Button minusspeedgame;
-    public Button plusgrowthrate;
-    public Button minusgrowthrate;
-    public Button plushealthrabbit;
-    public Button minushealthrabbit;
-    public KeyCode showMenuKey = KeyCode.Escape;
+    public float CurrentTime;//считает колличество секунд
+    public float GameSeconds;//колличество секунд
+    public float GameMinutes;//колличество минут
+    string StringSecond;//колличество секунд в виде строки
+    string StringMinutes;//колличество минут в виде строки
+    [Header("Text")]//название типа элемента в программе (вывод текста и значений)
+    public Text rabbits;//блок для вывода информации о колличестве кроликах
+    public Text grass2;//блок для вывода информации о колличестве травы
+    public Text Speedgame;//блок для вывода информации о скорости игры
+    public Text growthrateGrass;//блок для вывода информации о скорости роста травы
+    public Text Healthrabbit;//блок для вывода информации о колличестве здоровья кролика
+    public Text Eatgrass;//блок для вывода информации о колличестве съеденной травы
+    public Text TextTime;//блок для вывода информации о колличестве времени действия симуляции
+    [Header("Button")]//название типа элемента в программе (кнопки)
+    public Button exit;//кнопка: выход из симулятора
+    public Button stop;//кнопка: остановка симулятора
+    public Button continue1;//кнопка: возобновление симуляции
+    public Button close;//кнопка: закрытие панели информации и ее изменений
+    public Button plusspeedgame;//кнопка: увеличение скорости симуляции
+    public Button minusspeedgame;//кнопка: уменьшение скорости симуляции
+    public Button plusgrowthrate;//кнопка: увеличение скорости роста травы
+    public Button minusgrowthrate;//кнопка: уменьшение скорости роста травы
+    public KeyCode showMenuKey = KeyCode.Escape;//обработка нажатия клавишы Esc
 
     void Start()
     {
@@ -52,9 +52,7 @@ public class Main : MonoBehaviour
         minusspeedgame.onClick.AddListener(Minusspeedgame);
         plusgrowthrate.onClick.AddListener(Plusgrowthrate);
         minusgrowthrate.onClick.AddListener(Minusgrowthrate);
-        plushealthrabbit.onClick.AddListener(Plushealthrabbit);
-        minushealthrabbit.onClick.AddListener(Minushealthrabbit);
-        Time.timeScale = 10;
+        Time.timeScale = 1;
         grassSeeder(50, 50);
         grassSeeder(55, 50);
         grassSeeder(51, 53);
@@ -73,7 +71,7 @@ public class Main : MonoBehaviour
 
     public void Continue()
     {
-        Time.timeScale = 10f;
+        Time.timeScale = 1f;
     }
 
     public void Close()
@@ -100,16 +98,6 @@ public class Main : MonoBehaviour
     public void Minusgrowthrate()
     {
         grassSpeed--;
-    }
-
-    public void Plushealthrabbit()
-    {
-        healthRabbit++;
-    }
-
-    public void Minushealthrabbit()
-    {
-        healthRabbit--;
     }
 
     private void grassSeeder(int x, int y)
@@ -167,7 +155,7 @@ public class Main : MonoBehaviour
         }
 
         grassSum = grassSum + AI_rabbit.sumGrass;
-        healthRabbit = AI_rabbit.Health;
+        speedGame = Time.timeScale;// для вывода информации в unity в inspector
 
         GameSeconds = GameSeconds + Time.deltaTime;
         StringSecond = GameSeconds.ToString();
@@ -180,11 +168,12 @@ public class Main : MonoBehaviour
             GameSeconds = 0.0f;
         }
 
-        myText.text = "Популяция кроликов = " + AI_rabbit.counter2;
-        myText2.text = "Колличество травы = " + grassSum;
-        Speedgame.text = "Скорость симуляции = " + Time.timeScale;
+        rabbits.text = "Популяция кроликов = " + AI_rabbit.counter2;
+        grass2.text = "Колличество травы = " + grassSum;
+        Speedgame.text = "Скорость симуляции = " + speedGame;
         growthrateGrass.text = "Скорость роста травы = " + grassSpeed;
-        Healthrabbit.text = "Здоровье кролика = " + healthRabbit;
+        Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.Health;
+        Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counter;
         TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
     }
 }
