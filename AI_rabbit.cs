@@ -13,8 +13,8 @@ public class AI_rabbit : MonoBehaviour
     public static float counter2 = 0;//колличество кроликов, которое передается в файл Main для дальнейшего вывода на экран
     public static float sumGrass = 0;//колличество травы, которое передается в файл Main для дальнейшего вывода на экран
     public static float Health = 40;//колличество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
-    public float currentHealth = 40;//текущая установка здоровья кролика
-    public float counterGrass = 4;//текущая установка съеденной травы
+    public static float currentHealth = 40;//текущая установка здоровья кролика
+    public static float counterGrass = 4;//текущая установка съеденной травы
     public float health = 0;//колличество здоровья у кролика, которое отображается в inspector в unity
     public float Sumrabbit = 0;//колличество травы, которое отображается в inspector в unity
     public float Sumgrass = 0;//колличество кроликов, которое отображается в inspector в unity
@@ -29,6 +29,10 @@ public class AI_rabbit : MonoBehaviour
 
     void Start()
     {
+        plusrabbithealth.onClick.AddListener(Plusrabbithealth);
+        minusrabbithealth.onClick.AddListener(Minusrabbithealth);
+        pluseatgrass.onClick.AddListener(Pluseatgrass);
+        minuseatgrass.onClick.AddListener(Minuseatgrass);
         xGrass = Random.Range(0, 99);
         yGrass = Random.Range(0, 99);
         if (tag == "rabbit") currentHealth = Health;
@@ -38,10 +42,6 @@ public class AI_rabbit : MonoBehaviour
 
     void Update()
     {
-        plusrabbithealth.onClick.AddListener(Plusrabbithealth);
-        minusrabbithealth.onClick.AddListener(Minusrabbithealth);
-        pluseatgrass.onClick.AddListener(Pluseatgrass);
-        minuseatgrass.onClick.AddListener(Minuseatgrass);
         if (transform.position.y > 0.01) Destroy(gameObject);
         int xRabbit, yRabbit;
         transform.Rotate(x, y, z);
@@ -60,7 +60,7 @@ public class AI_rabbit : MonoBehaviour
             if (grass == null) sumGrass--;
             Debug.Log("sumGrass = " + sumGrass);
             counter++;
-            if (counter == counterGrass)
+            if (counter >= counterGrass)
             {
                 Health = currentHealth;
                 create();

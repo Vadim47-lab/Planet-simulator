@@ -149,15 +149,6 @@ public class Main : MonoBehaviour
 
     void Update()
     {
-        exit.onClick.AddListener(Exit);
-        stop.onClick.AddListener(Stop);
-        continue1.onClick.AddListener(Continue);
-        close.onClick.AddListener(Close);
-        plusspeedgame.onClick.AddListener(Plusspeedgame);
-        minusspeedgame.onClick.AddListener(Minusspeedgame);
-        plusgrowthrate.onClick.AddListener(Plusgrowthrate);
-        minusgrowthrate.onClick.AddListener(Minusgrowthrate);
-
         if (Input.GetKeyDown(showMenuKey))
         {
             information.SetActive(true);
@@ -182,8 +173,8 @@ public class Main : MonoBehaviour
         grass2.text = "Колличество травы = " + grassSum;
         Speedgame.text = "Скорость симуляции = " + speedGame;
         growthrateGrass.text = "Скорость роста травы = " + grassSpeed;
-        Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.Health;
-        Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counter;
+        Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.currentHealth;
+        Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
         TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
     }
 }
