@@ -155,8 +155,8 @@ public class AI_rabbit : MonoBehaviour
     private void create()
     {
         Instantiate(rabbit, transform.position, transform.rotation);
-        clone.name = "rabbit" + counter3;
         counter3++;
+        clone.name = "rabbit" + counter3;
     }
 
     private void life()
@@ -166,6 +166,8 @@ public class AI_rabbit : MonoBehaviour
             if (tag == "rabbit" + i)
             {
                 Health--;
+                Debug.Log("Здоровье кролика = " + Health);
+                //Debug.Log("Тэг кролика = " + tag);
             }
         }
         if (Health <= 0 && tag == "rabbit" + i)
