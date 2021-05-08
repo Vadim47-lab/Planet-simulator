@@ -56,9 +56,10 @@ public class AI_rabbit : MonoBehaviour
         //if (Health > game.GetComponent<Main>().healthRabbit) Health = game.GetComponent<Main>().healthRabbit;
         if (grass != null && Health <= 20)
         {
+            if (grass != null) Main.grassSum--;
             Destroy(grass);
-            if (grass == null) sumGrass--;
-            Debug.Log("sumGrass = " + sumGrass);
+            //if (grass == null) sumGrass--;
+            //Debug.Log("sumGrass = " + Main.grassSum);
             counter++;
             if (counter >= counterGrass)
             {
@@ -104,7 +105,8 @@ public class AI_rabbit : MonoBehaviour
         switch (randomT)
         {
            case 0:
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", false);
+               y = 0;
+               if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", false);
                break;
            case 1:
            case 2:

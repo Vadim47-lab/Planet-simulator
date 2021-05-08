@@ -16,7 +16,7 @@ public class Main : MonoBehaviour
     public static float grassSum = 0;//колличество травы, значение которого берется из скрипта кролика и выводится на экран
     public static float eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
     public float speedGame;//скорость игры, которое выводится на экран
-    public float grassSpeed = 1f;//скорость роста травы, которое выводится на экран
+    public float grassSpeed = 0.1f;//скорость роста травы, которое выводится на экран
     public float time = 1;
     public float CurrentTime;//считает колличество секунд
     public float GameSeconds;//колличество секунд
@@ -29,6 +29,7 @@ public class Main : MonoBehaviour
     public Text Speedgame;//блок для вывода информации о скорости игры
     public Text growthrateGrass;//блок для вывода информации о скорости роста травы
     public Text Healthrabbit;//блок для вывода информации о колличестве здоровья кролика
+    public Text Healthfox; //блок для вывода информации о колличестве здоровья лисы
     public Text Eatgrass;//блок для вывода информации о колличестве съеденной травы
     public Text TextTime;//блок для вывода информации о колличестве времени действия симуляции
     [Header("Button")]//название типа элемента в программе (кнопки)
@@ -56,6 +57,9 @@ public class Main : MonoBehaviour
         grassSeeder(50, 50);
         grassSeeder(55, 50);
         grassSeeder(51, 53);
+        grassSeeder(40, 40);
+        grassSeeder(45, 45);
+        grassSeeder(41, 41);
         InvokeRepeating("grassRun", grassSpeed, grassSpeed);
     }
 
@@ -175,6 +179,7 @@ public class Main : MonoBehaviour
         growthrateGrass.text = "Скорость роста травы = " + grassSpeed;
         Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.currentHealth;
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
+        //Healthfox = "Здоровье лисы" + AI_fox.health;
         TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
     }
 }
