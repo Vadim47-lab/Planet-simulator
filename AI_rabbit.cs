@@ -10,16 +10,16 @@ public class AI_rabbit : MonoBehaviour
     private float y = 0;//коррдинаты кролика по оси y
     private int xGrass, yGrass;//коррдинаты травы
     public int i;
-    public static float counter = 0; //колличество кроликов, которое передается в файл Main для дальнейшего вывода на экран
-    public static float counter2 = 1;//колличество кроликов, которое передается в файл Main для дальнейшего вывода на экран
-    public float counter3;//колличество кроликов пройденных за один шаг
-    public static float sumGrass = 0;//колличество травы, которое передается в файл Main для дальнейшего вывода на экран
-    public static float Health = 40;//колличество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
+    public static float counter = 0; //количество кроликов, которое передается в файл Main для дальнейшего вывода на экран
+    public static float counter2 = 1;//количество кроликов, которое передается в файл Main для дальнейшего вывода на экран
+    public float counter3 = 0;//количество кроликов пройденных за один шаг
+    public static float sumGrass = 0;//количество травы, которое передается в файл Main для дальнейшего вывода на экран
+    public static float Health = 40;//количество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
     public static float currentHealth = 40;//текущая установка здоровья кролика
     public static float counterGrass = 4;//текущая установка съеденной травы
-    public float health = 0;//колличество здоровья у кролика, которое отображается в inspector в unity
-    public float Sumrabbit = 0;//колличество травы, которое отображается в inspector в unity
-    public float Sumgrass = 0;//колличество кроликов, которое отображается в inspector в unity
+    public float health = 0;//количество здоровья у кролика, которое отображается в inspector в unity
+    public float Sumrabbit = 0;//количество травы, которое отображается в inspector в unity
+    public float Sumgrass = 0;//количество кроликов, которое отображается в inspector в unity
     public int randomT;//мозг кролика
     public GameObject rabbit;//игровой объект кролик
     public GameObject game;//пустой игровой объект со скриптом главной логики симулятора
@@ -38,7 +38,7 @@ public class AI_rabbit : MonoBehaviour
         minuseatgrass.onClick.AddListener(Minuseatgrass);
         xGrass = Random.Range(0, 99);
         yGrass = Random.Range(0, 99);
-        if (tag == "rabbit") currentHealth = Health;
+        if (tag == "rabbit" + i) currentHealth = Health;
         InvokeRepeating("brain", 0, 1f);
         InvokeRepeating("life", 1f, 1f);
     }
@@ -109,25 +109,25 @@ public class AI_rabbit : MonoBehaviour
         {
            case 0:
                y = 0;
-               if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", false);
+               if (tag == "rabbit" + 0) GetComponent<Animator>().SetBool("Run", false);
                break;
            case 1:
            case 2:
            case 3:
            case 4:
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "rabbit" + 0) GetComponent<Animator>().SetBool("Run", true);
                y = 0;
                break;
            case 9:
            case 5:
            case 6:
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "rabbit" + 0) GetComponent<Animator>().SetBool("Run", true);
                y = 2;
                break;
            case 7:
            case 8:
            case 10:
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "rabbit" + 0) GetComponent<Animator>().SetBool("Run", true);
                y = -2;
                break;
            case 11:
@@ -143,11 +143,11 @@ public class AI_rabbit : MonoBehaviour
                 }
                 if (grass == null)
                 {
-                    if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", false);
+                    if (tag == "rabbit" + 0) GetComponent<Animator>().SetBool("Run", false);
                     break;
                 }
                 transform.LookAt(grass.transform);
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "rabbit" + 0) GetComponent<Animator>().SetBool("Run", true);
                 break;
         }
     }
@@ -155,19 +155,20 @@ public class AI_rabbit : MonoBehaviour
     private void create()
     {
         Instantiate(rabbit, transform.position, transform.rotation);
-        clone.name = "rabbit" + counter2;
+        clone.name = "rabbit" + counter3;
+        counter3++;
     }
 
     private void life()
     {
-        for (i = 0; i < counter2; i++)
+        for (i = 0; i <= counter3; i++)
         {
             if (tag == "rabbit" + i)
             {
                 Health--;
             }
         }
-        if (Health <= 0 && tag == "rabbit")
+        if (Health <= 0 && tag == "rabbit" + i)
         { 
             //GetComponent<Animator>().SetBool("Death", true);
             Destroy(gameObject, 2f);

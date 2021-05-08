@@ -19,10 +19,10 @@ public class Main : MonoBehaviour
     public float grassSpeed = 0.1f;//скорость роста травы, которое выводится на экран
     public float time = 1;
     public float CurrentTime;//считает колличество секунд
-    public float GameSeconds;//колличество секунд
-    public float GameMinutes;//колличество минут
-    string StringSecond;//колличество секунд в виде строки
-    string StringMinutes;//колличество минут в виде строки
+    public float GameSeconds;//количество секунд
+    public float GameMinutes;//количество минут
+    string StringSecond;//количество секунд в виде строки
+    string StringMinutes;//количество минут в виде строки
     [Header("Text")]//название типа элемента в программе (вывод текста и значений)
     public Text rabbits;//блок для вывода информации о колличестве кроликах
     public Text grass2;//блок для вывода информации о колличестве травы
@@ -180,7 +180,7 @@ public class Main : MonoBehaviour
         }
 
         rabbits.text = "Популяция кроликов = " + AI_rabbit.counter2;
-        grass2.text = "Колличество травы = " + grassSum;
+        grass2.text = "Количество травы = " + grassSum;
         Speedgame.text = "Скорость симуляции = " + speedGame;
         growthrateGrass.text = "Скорость роста травы = " + grassSpeed;
         Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.currentHealth;
