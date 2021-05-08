@@ -9,8 +9,10 @@ public class AI_rabbit : MonoBehaviour
     private float x = 0;//коррдинаты кролика по оси x
     private float y = 0;//коррдинаты кролика по оси y
     private int xGrass, yGrass;//коррдинаты травы
+    public int i;
     public static float counter = 0; //колличество кроликов, которое передается в файл Main для дальнейшего вывода на экран
-    public static float counter2 = 0;//колличество кроликов, которое передается в файл Main для дальнейшего вывода на экран
+    public static float counter2 = 1;//колличество кроликов, которое передается в файл Main для дальнейшего вывода на экран
+    public float counter3;//колличество кроликов пройденных за один шаг
     public static float sumGrass = 0;//колличество травы, которое передается в файл Main для дальнейшего вывода на экран
     public static float Health = 40;//колличество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
     public static float currentHealth = 40;//текущая установка здоровья кролика
@@ -21,6 +23,7 @@ public class AI_rabbit : MonoBehaviour
     public int randomT;//мозг кролика
     public GameObject rabbit;//игровой объект кролик
     public GameObject game;//пустой игровой объект со скриптом главной логики симулятора
+    public GameObject clone;
     [Header("Button")]//название типа элемента в программе (кнопки)
     public Button plusrabbithealth;//кнопка увеличивающая жизнь кролику
     public Button minusrabbithealth;//кнопка уменьшающая жизнь кролику
@@ -152,11 +155,18 @@ public class AI_rabbit : MonoBehaviour
     private void create()
     {
         Instantiate(rabbit, transform.position, transform.rotation);
+        clone.name = "rabbit" + counter2;
     }
 
     private void life()
     {
-        if (tag == "rabbit") Health--;
+        for (i = 0; i < counter2; i++)
+        {
+            if (tag == "rabbit" + i)
+            {
+                Health--;
+            }
+        }
         if (Health <= 0 && tag == "rabbit")
         { 
             //GetComponent<Animator>().SetBool("Death", true);

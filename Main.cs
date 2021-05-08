@@ -60,6 +60,12 @@ public class Main : MonoBehaviour
         grassSeeder(40, 40);
         grassSeeder(45, 45);
         grassSeeder(41, 41);
+        grassSeeder(50, 50);
+        grassSeeder(55, 50);
+        grassSeeder(51, 53);
+        grassSeeder(40, 40);
+        grassSeeder(45, 45);
+        grassSeeder(41, 41);
         InvokeRepeating("grassRun", grassSpeed, grassSpeed);
     }
 
