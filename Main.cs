@@ -13,7 +13,7 @@ public class Main : MonoBehaviour
     public GameObject rabbit5;//пустой игровой объект со скриптом мозга кролика
     public GameObject information;//игровой объект в виде панели для отображения и изменения информации объектов симулятора
     public GameObject help;//игровой объект в виде панели для отображения подсказки о запуске панели информации
-    public static float grassSum = 0;//колличество травы, значение которого берется из скрипта кролика и выводится на экран
+    public float grassSum1 = 0;//колличество травы, значение которого берется из скрипта кролика и выводится на экран
     public static float eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
     public float speedGame;//скорость игры, которое выводится на экран
     public float grassSpeed = 0.1f;//скорость роста травы, которое выводится на экран
@@ -114,14 +114,13 @@ public class Main : MonoBehaviour
     {
         GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.4f, 0.4f), 0, y * 0.5f + Random.Range(-0.4f, 0.4f)), transform.rotation);
         grass[x, y] = plant; // - трава
+        grassSum1++;
     }
 
     private void grassFantomSeeder(int x, int y)
     {
         GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.4f, 0.4f), 0, y * 0.5f + Random.Range(-0.4f, 0.4f)), transform.rotation);
         grassFantom[x, y] = plant; // - трава
-        grassSum++;
-        //Debug.Log("grassSum = " + grassSum);
     }
 
     private void grassRun()
@@ -165,7 +164,7 @@ public class Main : MonoBehaviour
             help.SetActive(false);
         }
 
-        grassSum = grassSum + AI_rabbit.sumGrass;
+        grassSum1 = grassSum1 + AI_rabbit.grassSum;
         speedGame = Time.timeScale;// для вывода информации в unity в inspector
 
         GameSeconds = GameSeconds + Time.deltaTime;
@@ -180,12 +179,12 @@ public class Main : MonoBehaviour
         }
 
         rabbits.text = "Популяция кроликов = " + AI_rabbit.counter2;
-        grass2.text = "Количество травы = " + grassSum;
+        grass2.text = "Количество травы = " + grassSum1;
         Speedgame.text = "Скорость симуляции = " + speedGame;
         growthrateGrass.text = "Скорость роста травы = " + grassSpeed;
-        Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.currentHealth;
+        Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.health;
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
-        //Healthfox = "Здоровье лисы" + AI_fox.health;
+        Healthfox.text = "Здоровье лисы = " + AI_fox.health;
         TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
     }
 }

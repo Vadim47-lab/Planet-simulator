@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class AI_fox : MonoBehaviour
@@ -13,10 +14,15 @@ public class AI_fox : MonoBehaviour
     public GameObject target = null;//игровой объект для поедания лисой
     public GameObject fox;//игровой объект лиса
     public int random;//мозг лисы
-    public float counter;//колисчество созданных лис
+    public float counter = 1;//колисчество созданных лис
+    public static float counter5 = 0;//колисчество созданных лис, которое передается в файл Main для дальнейшего вывода на экран
+    public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
+    public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
 
     void Start()
     {
+        plusfoxhealth.onClick.AddListener(Plusrabbithealth);
+        minusfoxhealth.onClick.AddListener(Minusrabbithealth);
         target = null;
         //GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
         //target = rabbits[Random.Range(0, rabbits.Length)];
@@ -26,9 +32,20 @@ public class AI_fox : MonoBehaviour
         InvokeRepeating("life", 1f, 1f);
     }
 
+    public void Plusrabbithealth()
+    {
+        Health++;
+    }
+
+    public void Minusrabbithealth()
+    {
+        Health--;
+    }
+
     private void Update()
     {
-
+        health = Health;
+        counter5 = counter;
     }
 
     void FixedUpdate()
@@ -45,29 +62,29 @@ public class AI_fox : MonoBehaviour
         {
             case 0:
                 y = 0;
-                GetComponent<Animator>().SetBool("Run", false);
+                if (tag == "fox") GetComponent<Animator>().SetBool("Run", false);
                 break;
             case 1:
             case 2:
             case 3:
             case 4:
-                GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
                 y = 0;
                 break;
             case 5:
             case 6:
             case 7:
-                GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
                 y = 2;
                 break;
             case 8:
             case 9:
             case 10:
-                GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
                 y = -2;
                 break;
             case 11:
-                GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
                 if (target == null)
                 {
                     GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
@@ -84,7 +101,7 @@ public class AI_fox : MonoBehaviour
     private void life()
     {
         Health--;
-        if (Health <= 0)
+        if (Health <= 0 && tag == "fox")
         {
             //GetComponent<Animator>().SetBool("Death", true);
             Destroy(gameObject, 2f);
