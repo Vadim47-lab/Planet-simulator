@@ -13,7 +13,7 @@ public class Main : MonoBehaviour
     public GameObject rabbit5;//пустой игровой объект со скриптом мозга кролика
     public GameObject information;//игровой объект в виде панели для отображения и изменения информации объектов симулятора
     public GameObject help;//игровой объект в виде панели для отображения подсказки о запуске панели информации
-    public float grassSum1 = 0;//колличество травы, значение которого берется из скрипта кролика и выводится на экран
+    public float grassSum1 = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
     public static float eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
     public float speedGame;//скорость игры, которое выводится на экран
     public float grassSpeed = 0.1f;//скорость роста травы, которое выводится на экран
@@ -24,14 +24,15 @@ public class Main : MonoBehaviour
     string StringSecond;//количество секунд в виде строки
     string StringMinutes;//количество минут в виде строки
     [Header("Text")]//название типа элемента в программе (вывод текста и значений)
-    public Text rabbits;//блок для вывода информации о колличестве кроликах
-    public Text grass2;//блок для вывода информации о колличестве травы
+    public Text rabbits;//блок для вывода информации о количестве кроликах
+    public Text grass2;//блок для вывода информации о количестве травы
     public Text Speedgame;//блок для вывода информации о скорости игры
     public Text growthrateGrass;//блок для вывода информации о скорости роста травы
-    public Text Healthrabbit;//блок для вывода информации о колличестве здоровья кролика
-    public Text Healthfox; //блок для вывода информации о колличестве здоровья лисы
-    public Text Eatgrass;//блок для вывода информации о колличестве съеденной травы
-    public Text TextTime;//блок для вывода информации о колличестве времени действия симуляции
+    public Text Healthrabbit;//блок для вывода информации о количестве здоровья кролика
+    public Text Healthfox; //блок для вывода информации о количестве здоровья лисы
+    public Text Healthcounter; //блок для вывода информации о количестве созданных лис
+    public Text Eatgrass;//блок для вывода информации о количестве съеденной травы
+    public Text TextTime;//блок для вывода информации о количестве времени действия симуляции
     [Header("Button")]//название типа элемента в программе (кнопки)
     public Button exit;//кнопка: выход из симулятора
     public Button stop;//кнопка: остановка симулятора
@@ -185,6 +186,7 @@ public class Main : MonoBehaviour
         Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.health;
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
         Healthfox.text = "Здоровье лисы = " + AI_fox.health;
+        Healthcounter.text = "Количество созданных лис = " + AI_fox.counter4;
         TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
     }
 }

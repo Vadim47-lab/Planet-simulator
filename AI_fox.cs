@@ -15,14 +15,18 @@ public class AI_fox : MonoBehaviour
     public GameObject fox;//игровой объект лиса
     public int random;//мозг лисы
     public float counter = 1;//колисчество созданных лис
-    public static float counter5 = 0;//колисчество созданных лис, которое передается в файл Main для дальнейшего вывода на экран
+    public static float counter4 = 0;//колисчество созданных лис, для вывода на экран в Main
     public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
     public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
+    public Button plusfoxcounter;//кнопка увеличивающая количество созданных лис
+    public Button minusfoxcounter;//кнопка уменьшающая количество созданных лис
 
     void Start()
     {
-        plusfoxhealth.onClick.AddListener(Plusrabbithealth);
-        minusfoxhealth.onClick.AddListener(Minusrabbithealth);
+        plusfoxhealth.onClick.AddListener(Plusfoxhealth);
+        minusfoxhealth.onClick.AddListener(Minusfoxhealth);
+        plusfoxcounter.onClick.AddListener(Plusfoxcounter);
+        minusfoxcounter.onClick.AddListener(Minusfoxcounter);
         target = null;
         //GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
         //target = rabbits[Random.Range(0, rabbits.Length)];
@@ -32,20 +36,31 @@ public class AI_fox : MonoBehaviour
         InvokeRepeating("life", 1f, 1f);
     }
 
-    public void Plusrabbithealth()
+    public void Plusfoxhealth()
     {
         Health++;
     }
 
-    public void Minusrabbithealth()
+    public void Minusfoxhealth()
     {
         Health--;
     }
 
-    private void Update()
+    public void Plusfoxcounter()
+    {
+        counter++;
+        Instantiate(fox, transform.position, transform.rotation);
+    }
+
+    public void Minusfoxcounter()
+    {
+        counter--;
+    }
+
+    void Update()
     {
         health = Health;
-        counter5 = counter;
+        counter4 = counter;
     }
 
     void FixedUpdate()
