@@ -26,6 +26,7 @@ public class Window_graph : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(11, 11);
         rectTransform.anchorMin = new Vector2(0,0);
         rectTransform.anchorMax = new Vector2(0,0);
+        return gameObject;
     }
 
     private void ShowGraph(List<int> valueList)
