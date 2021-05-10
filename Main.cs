@@ -12,6 +12,7 @@ public class Main : MonoBehaviour
     public GameObject Grass;//игровой объект травы
     public GameObject rabbit5;//пустой игровой объект со скриптом мозга кролика
     public GameObject information;//игровой объект в виде панели для отображения и изменения информации объектов симулятора
+    public GameObject Window_grapg1;//игровой объект в виде панели для отображения графика об информации в симуляторе
     public GameObject help;//игровой объект в виде панели для отображения подсказки о запуске панели информации
     public float grassSum1 = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
     public static float eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
@@ -38,11 +39,13 @@ public class Main : MonoBehaviour
     public Button stop;//кнопка: остановка симулятора
     public Button continue1;//кнопка: возобновление симуляции
     public Button close;//кнопка: закрытие панели информации и ее изменений
+    public Button close2;//кнопка: закрытие панели изображения графика
     public Button plusspeedgame;//кнопка: увеличение скорости симуляции
     public Button minusspeedgame;//кнопка: уменьшение скорости симуляции
     public Button plusgrowthrate;//кнопка: увеличение скорости роста травы
     public Button minusgrowthrate;//кнопка: уменьшение скорости роста травы
     public KeyCode showMenuKey = KeyCode.Escape;//обработка нажатия клавишы Esc
+    public KeyCode showMenuKey2 = KeyCode.Tab;//обработка нажатия клавишы Tab
 
     void Start()
     {
@@ -50,6 +53,7 @@ public class Main : MonoBehaviour
         stop.onClick.AddListener(Stop);
         continue1.onClick.AddListener(Continue);
         close.onClick.AddListener(Close);
+        close2.onClick.AddListener(Close2);
         plusspeedgame.onClick.AddListener(Plusspeedgame);
         minusspeedgame.onClick.AddListener(Minusspeedgame);
         plusgrowthrate.onClick.AddListener(Plusgrowthrate);
@@ -88,6 +92,12 @@ public class Main : MonoBehaviour
     public void Close()
     {
         information.SetActive(false);
+        help.SetActive(true);
+    }
+
+    public void Close2()
+    {
+        Window_grapg1.SetActive(false);
         help.SetActive(true);
     }
 
@@ -162,6 +172,11 @@ public class Main : MonoBehaviour
         if (Input.GetKeyDown(showMenuKey))
         {
             information.SetActive(true);
+            help.SetActive(false);
+        }
+        if (Input.GetKeyDown(showMenuKey2))
+        {
+            Window_grapg1.SetActive(true);
             help.SetActive(false);
         }
 

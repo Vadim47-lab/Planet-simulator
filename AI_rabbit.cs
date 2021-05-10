@@ -19,6 +19,7 @@ public class AI_rabbit : MonoBehaviour
     public float Sumrabbit = 0;//количество кроликов, которое отображается в inspector в unity
     public float Sumgrass = 0;//количество травы, которое отображается в inspector в unity
     public int randomT;//мозг кролика
+    public int random2;//обход камня
     public GameObject rabbit;//игровой объект кролик
     public GameObject game;//пустой игровой объект со скриптом главной логики симулятора
     [Header("Button")]//название типа элемента в программе (кнопки)
@@ -109,7 +110,7 @@ public class AI_rabbit : MonoBehaviour
            case 2:
            case 3:
            case 4:
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+               if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
                y = 0;
                break;
            case 9:
@@ -117,15 +118,16 @@ public class AI_rabbit : MonoBehaviour
            case 6:
                 if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
                y = 2;
-               break;
+                break;
            case 7:
            case 8:
            case 10:
                 if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
                y = -2;
-               break;
+                break;
            case 11:
                 y = 0;
+                if (tag == "stone") y = 2;
                 GameObject grass = null;
                 if (game.GetComponent<Main>().grass[xGrass, yGrass] == null)
                 {
@@ -143,6 +145,19 @@ public class AI_rabbit : MonoBehaviour
                 transform.LookAt(grass.transform);
                 if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
                 break;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        random2 = Random.Range(0, 1);
+        if (other.tag == "stone" && random2 == 0)
+        {
+            y = 2;
+        }
+        if (other.tag == "stone" && random2 == 1)
+        {
+            y = -2;
         }
     }
 

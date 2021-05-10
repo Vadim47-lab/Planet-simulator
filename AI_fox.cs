@@ -9,10 +9,11 @@ public class AI_fox : MonoBehaviour
     private float z = 0;//коррдинаты кролика по оси z
     private float x = 0;//коррдинаты кролика по оси x
     private float y = 0;//коррдинаты кролика по оси y
-    public float Health = 40;//колличество здоровья у лисы
+    public float Health = 80;//колличество здоровья у лисы
     public static float health = 0;//колличество здоровья у лисы, которое передается в файл Main для дальнейшего вывода на экран
     public GameObject target = null;//игровой объект для поедания лисой
     public GameObject fox;//игровой объект лиса
+    public int random2;//обход камня
     public int random;//мозг лисы
     public float counter = 1;//колисчество созданных лис
     public static float counter4 = 0;//колисчество созданных лис, для вывода на экран в Main
@@ -31,7 +32,7 @@ public class AI_fox : MonoBehaviour
         //GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
         //target = rabbits[Random.Range(0, rabbits.Length)];
         y = 0f;
-        Health = 40;
+        Health = 80;
         InvokeRepeating("brain", 0, 1f);
         InvokeRepeating("life", 1f, 1f);
     }
@@ -125,9 +126,18 @@ public class AI_fox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        random2 = Random.Range(0, 1);
+        if (other.tag == "stone" && random2 == 0)
+        {
+            y = 2;
+        }
+        if (other.tag == "stone" && random2 == 1)
+        {
+            y = -2;
+        }
         if (other.tag == "rabbit" && Health < 20)
         {
-            Health = 40;
+            Health = 80;
             target = null;
             Destroy(other.gameObject);
             Instantiate(fox, transform.position, transform.rotation);
