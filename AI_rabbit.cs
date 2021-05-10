@@ -127,7 +127,6 @@ public class AI_rabbit : MonoBehaviour
                 break;
            case 11:
                 y = 0;
-                if (tag == "stone") y = 2;
                 GameObject grass = null;
                 if (game.GetComponent<Main>().grass[xGrass, yGrass] == null)
                 {
