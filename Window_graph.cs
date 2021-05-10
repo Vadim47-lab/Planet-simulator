@@ -16,7 +16,7 @@ public class Window_graph : MonoBehaviour
         ShowGraph(valueList);
     }
 
-    private void CreateCircle(Vector2 anchoredPosition)
+    private GameObject CreateCircle(Vector2 anchoredPosition)
     {
         GameObject gameObject = new GameObject("circle", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
@@ -31,16 +31,20 @@ public class Window_graph : MonoBehaviour
 
     private void ShowGraph(List<int> valueList)
     {
-        int i = 0;
-        float graphHeight = graphContainer.sizeDelta.y;
-        float yMaximum = 30f;
-        float xSize = 25f;
+        int i;
+        float graphHeight = graphContainer.sizeDelta.y; //Определяем высоту контейнера для графика
+        float graphWidth = graphContainer.sizeDelta.x; //Определяем ширину контейнера для графика
+        float yMaximum = 98;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
+        float yMin = 5;//valueList.Min; //Вычисляем минимальное значение  по Y для всех значений списка valueList
+        float xMaximum = valueList.Count; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
+        float xSize = xMaximum / graphWidth; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
+        float ySize = (yMaximum - yMin) / graphHeight; //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
         GameObject LastCircleGameObject = null;
         for (i = 0; i < valueList.Count; i++)
         {
-            float xPosition = i * xSize;
-            float yPosition = (valueList[i] / yMaximum) * graphHeight;
-            GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
+            float xPosition = i * xSize; //Вычисляем позицию X для очередной точки на графике
+            float yPosition = valueList[i] * ySize;//Вычисляем позицию Y для очередной точки на графике
+            GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));//Строим новую точку на графике в координату xPosition, yPosition 
             if (LastCircleGameObject != null) 
             {
                 CreateDoConnection(LastCircleGameObject.GetComponent<RectTransform>().anchoredPosition, circleGameObject.GetComponent<RectTransform>().anchoredPosition);
@@ -48,6 +52,26 @@ public class Window_graph : MonoBehaviour
             LastCircleGameObject = circleGameObject;
         }
     }
+
+    /*private void ShowGraph(List<int> valueList)
+    {
+        int i;
+        float graphHeight = graphContainer.sizeDelta.y; //Определяем высоту контейнера для графика
+        float graphWidth = graphContainer.sizeDelta.x; //Определяем ширину контейнера для графика
+
+        float yMaximum = 98;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
+        float yMin = 5;//valueList.Min; //Вычисляем минимальное значение  по Y для всех значений списка valueList
+        float xMaximum = (valueList.Count); //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
+        float xSize = xMaximum / graphWidth; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
+        float ySize = (yMaximum - yMin) / graphHeight; //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
+        for (i = 0; i < valueList.Count; i++) //Запускаем цикл по всем значениям списка в valueList.
+        {
+            float xPosition = i * xSize; //Вычисляем позицию X для очередной точки на графике
+            float yPosition = valueList[i] * graphHeight;//Вычисляем позицию Y для очередной точки на графике
+            CreateCircle(new Vector2(xPosition, yPosition));//Строим новую точку на графике в координату xPosition, yPosition 
+        }
+        LastCircleGameObject = circleGameObject;
+    }*/
 
     private void CreateDoConnection(Vector2 dotPositionA, Vector2 dotPositionB)
     {
