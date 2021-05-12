@@ -9,14 +9,16 @@ public class AI_fox : MonoBehaviour
     private float z = 0;//коррдинаты кролика по оси z
     private float x = 0;//коррдинаты кролика по оси x
     private float y = 0;//коррдинаты кролика по оси y
-    public float Health = 80;//колличество здоровья у лисы
+    public float Health = 60;//колличество здоровья у лисы
     public static float health = 0;//колличество здоровья у лисы, которое передается в файл Main для дальнейшего вывода на экран
     public GameObject target = null;//игровой объект для поедания лисой
     public GameObject fox;//игровой объект лиса
     public int random2;//обход камня
     public int random;//мозг лисы
-    public float counter = 1;//колисчество созданных лис
-    public static float counter4 = 0;//колисчество созданных лис, для вывода на экран в Main
+    public int maxChild = 2;//сколько лис можно родить
+    public int age = 100;//биологический возраст максимальный
+
+    public static float counter4 = 1;//колисчество созданных лис, для вывода на экран в Main
     public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
     public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
     public Button plusfoxcounter;//кнопка увеличивающая количество созданных лис
@@ -24,6 +26,8 @@ public class AI_fox : MonoBehaviour
 
     void Start()
     {
+        maxChild = 2;
+        age = 100;
         plusfoxhealth.onClick.AddListener(Plusfoxhealth);
         minusfoxhealth.onClick.AddListener(Minusfoxhealth);
         plusfoxcounter.onClick.AddListener(Plusfoxcounter);
@@ -32,7 +36,7 @@ public class AI_fox : MonoBehaviour
         //GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
         //target = rabbits[Random.Range(0, rabbits.Length)];
         y = 0f;
-        Health = 80;
+        Health = 60;
         InvokeRepeating("brain", 0, 1f);
         InvokeRepeating("life", 1f, 1f);
     }
@@ -49,19 +53,28 @@ public class AI_fox : MonoBehaviour
 
     public void Plusfoxcounter()
     {
-        counter++;
+        counter4++;
         Instantiate(fox, transform.position, transform.rotation);
     }
 
     public void Minusfoxcounter()
     {
-        counter--;
+        counter4--;
     }
 
     void Update()
     {
+        if (transform.position.y > 0.01)
+        {
+            counter4--;
+            Destroy(gameObject);
+        }
+        if (transform.position.y > 0.01)
+        {
+            counter4--;
+            Destroy(gameObject);
+        }
         health = Health;
-        counter4 = counter;
     }
 
     void FixedUpdate()
@@ -72,8 +85,14 @@ public class AI_fox : MonoBehaviour
 
     private void brain()
     {
+        age--;
+        if (age == 0)
+        {
+            counter4--;
+            Destroy(gameObject);
+        }
         random = Random.Range(0, 10);
-        if (Health <= 20) random = 11;
+        if (Health <= 15) random = 11;
         switch (random)
         {
             case 0:
@@ -100,6 +119,7 @@ public class AI_fox : MonoBehaviour
                 y = -2;
                 break;
             case 11:
+                y = 0;
                 if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
                 if (target == null)
                 {
@@ -119,8 +139,9 @@ public class AI_fox : MonoBehaviour
         Health--;
         if (Health <= 0 && tag == "fox")
         {
+            counter4--;
             //GetComponent<Animator>().SetBool("Death", true);
-            Destroy(gameObject, 2f);
+            Destroy(gameObject);
         }
     }
 
@@ -137,11 +158,17 @@ public class AI_fox : MonoBehaviour
         }
         if (other.tag == "rabbit" && Health < 20)
         {
-            Health = 80;
+            Health = 60;
             target = null;
             Destroy(other.gameObject);
             Instantiate(fox, transform.position, transform.rotation);
-            counter++;
+            counter4++;
+            maxChild--;
+            if (maxChild == 0)
+            {
+                counter4--;
+                Destroy(gameObject);
+            }
         }
     }
 }

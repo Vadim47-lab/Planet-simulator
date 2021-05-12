@@ -44,6 +44,7 @@ public class Main : MonoBehaviour
     public Button minusspeedgame;//кнопка: уменьшение скорости симуляции
     public Button plusgrowthrate;//кнопка: увеличение скорости роста травы
     public Button minusgrowthrate;//кнопка: уменьшение скорости роста травы
+    [Header("Keys")]//название типа элемента в программе (клавишы)
     public KeyCode showMenuKey = KeyCode.Escape;//обработка нажатия клавишы Esc
     public KeyCode showMenuKey2 = KeyCode.Tab;//обработка нажатия клавишы Tab
 
@@ -194,7 +195,7 @@ public class Main : MonoBehaviour
             GameSeconds = 0.0f;
         }
 
-        rabbits.text = "Популяция кроликов = " + AI_rabbit.counter2;
+        rabbits.text = "Популяция кроликов = " + AI_rabbit.Sumrabbit;
         grass2.text = "Количество травы = " + grassSum1;
         Speedgame.text = "Скорость симуляции = " + speedGame;
         growthrateGrass.text = "Скорость роста травы = " + grassSpeed;

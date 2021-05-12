@@ -9,14 +9,14 @@ public class AI_rabbit : MonoBehaviour
     private float x = 0;//коррдинаты кролика по оси x
     private float y = 0;//коррдинаты кролика по оси y
     private int xGrass, yGrass;//коррдинаты травы
-    public static float counter = 0; //количество кроликов, которое передается в файл Main для дальнейшего вывода на экран
-    public static float counter2 = 1;//количество кроликов, которое передается в файл Main для дальнейшего вывода на экран
+    public int counter = 0; //количество съеденной травы, которое передается в файл Main для дальнейшего вывода на экран
+    public static int counter2 = 1;//количество кроликов, которое передается в файл Main для дальнейшего вывода на экран
     public float sumGrass = 0;//количество травы, которое съел кролик
     public static float grassSum = 0;//количество травы для отображения на экран через файл main
     public float Health = 40;//количество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
     public static float counterGrass = 4;//текущая установка съеденной травы
     public static float health = 0;//количество здоровья у кролика, которое отображается в inspector в unity
-    public float Sumrabbit = 0;//количество кроликов, которое отображается в inspector в unity
+    public static float Sumrabbit = 0;//количество кроликов, которое отображается в inspector в unity
     public float Sumgrass = 0;//количество травы, которое отображается в inspector в unity
     public int randomT;//мозг кролика
     public int random2;//обход камня
@@ -27,9 +27,13 @@ public class AI_rabbit : MonoBehaviour
     public Button minusrabbithealth;//кнопка уменьшающая жизнь кролику
     public Button pluseatgrass;//кнопка увеличивающая колличество сЪеденной травы
     public Button minuseatgrass;//кнопка уменьшающая колличество сЪеденной травы
+    public int maxChild = 4;//сколько кроликов можно родить
+    public int age = 220;//биологический возраст максимальный
 
     void Start()
     {
+        age = 220;
+        maxChild = 4;
         plusrabbithealth.onClick.AddListener(Plusrabbithealth);
         minusrabbithealth.onClick.AddListener(Minusrabbithealth);
         pluseatgrass.onClick.AddListener(Pluseatgrass);
@@ -43,11 +47,15 @@ public class AI_rabbit : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.y > 0.01) Destroy(gameObject);
+        if (transform.position.y > 0.01)
+        {
+            counter2--;
+            Destroy(gameObject);
+        }
         int xRabbit, yRabbit;
         transform.Rotate(x, y, z);
-        xRabbit = Mathf.RoundToInt(transform.position.x * 2f) - 1;
-        yRabbit = Mathf.RoundToInt(transform.position.z * 2f) - 1;
+        xRabbit = Mathf.RoundToInt(transform.position.x * 2f) + 1 ;
+        yRabbit = Mathf.RoundToInt(transform.position.z * 2f) + 1;
         GameObject grass = null;
         if (xRabbit >= 0 && xRabbit < 100 && yRabbit >= 0 && yRabbit < 100)
         {
@@ -57,7 +65,9 @@ public class AI_rabbit : MonoBehaviour
         //if (Health > game.GetComponent<Main>().healthRabbit) Health = game.GetComponent<Main>().healthRabbit;
         if (grass != null && Health <= 20)
         {
+            game.GetComponent<Main>().grass[xRabbit, yRabbit] = null;
             Destroy(grass);
+
             sumGrass--;
             counter++;
             if (counter >= counterGrass)
@@ -66,8 +76,14 @@ public class AI_rabbit : MonoBehaviour
                 create();
                 counter = 0;
                 counter2++;
+                maxChild--;
+                if (maxChild == 0)
+                {
+                    counter2--;
+                    Destroy(gameObject);
+                }
             }
-            game.GetComponent<Main>().grass[xRabbit, yRabbit] = null;
+            
         }
         health = Health;
         Sumgrass = counter;
@@ -97,6 +113,12 @@ public class AI_rabbit : MonoBehaviour
 
     private void brain()
     {
+        age--;
+        if (age == 0)
+        {
+            counter2--;
+            Destroy(gameObject);
+        }
         //Получить случайное число (в диапазоне от 0 до 1)
         randomT = Random.Range(0, 10);
         if (Health <= 20) randomT = 11;
@@ -113,14 +135,14 @@ public class AI_rabbit : MonoBehaviour
                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
                y = 0;
                break;
-           case 9:
            case 5:
            case 6:
+           case 7:
                 if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
                y = 2;
                 break;
-           case 7:
            case 8:
+           case 9:
            case 10:
                 if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
                y = -2;
