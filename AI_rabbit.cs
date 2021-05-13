@@ -89,6 +89,7 @@ public class AI_rabbit : MonoBehaviour
         Sumgrass = counter;
         grassSum = Sumgrass;
         Sumrabbit = counter2;//для вывода информации в unity в inspector
+        Window_graph.ShowGraph(Window_graph.valueList);
     }
 
     public void Plusrabbithealth()

@@ -8,11 +8,15 @@ public class Window_graph : MonoBehaviour
 {
     [SerializeField] private Sprite circleSprite;//создание спрайта, наша точка для построения графа
     private RectTransform graphContainer;
+    public int maxCounter2 = 0;
 
     private void Awake()
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
-        List<int> valueList = new List<int>() {5, 23, 54, 67, 98, 32, 54, 65, 32};
+        List<int> valueList = new List<int>() { 1, 1 };
+        valueList.Add(AI_rabbit.counter2);
+        if (AI_rabbit.counter2 > maxCounter2) maxCounter2 = AI_rabbit.counter2;
+        //List<int> valueList = new List<int>() {5, 23, 54, 67, 98, 32, 54, 65, 32};
         ShowGraph(valueList);
     }
 
@@ -23,7 +27,7 @@ public class Window_graph : MonoBehaviour
         gameObject.GetComponent<Image>().sprite = circleSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = anchoredPosition;
-        rectTransform.sizeDelta = new Vector2(11, 11);
+        rectTransform.sizeDelta = new Vector2(5, 5);
         rectTransform.anchorMin = new Vector2(0,0);
         rectTransform.anchorMax = new Vector2(0,0);
         return gameObject;
@@ -34,11 +38,11 @@ public class Window_graph : MonoBehaviour
         int i;
         float graphHeight = graphContainer.sizeDelta.y; //Определяем высоту контейнера для графика
         float graphWidth = graphContainer.sizeDelta.x; //Определяем ширину контейнера для графика
-        float yMaximum = 98;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
-        float yMin = 5;//valueList.Min; //Вычисляем минимальное значение  по Y для всех значений списка valueList
+        float yMaximum = 40;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
+        float yMin = 1;//valueList.Min; //Вычисляем минимальное значение  по Y для всех значений списка valueList
         float xMaximum = valueList.Count - 1; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
         float xSize = graphWidth / xMaximum; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
-        float ySize = graphHeight / (yMaximum - yMin); //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
+        float ySize = (graphHeight - 15) / (yMaximum - yMin); //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
         GameObject LastCircleGameObject = null;
         for (i = 0; i < valueList.Count; i++)
         {
@@ -68,13 +72,13 @@ public class Window_graph : MonoBehaviour
         rectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
     }
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         
+    }
+
+    void Start()
+    {
+
     }
 }

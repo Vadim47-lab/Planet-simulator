@@ -13,6 +13,7 @@ public class Window_graph2 : MonoBehaviour
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
         List<int> valueList = new List<int>() { 15, 15, 30, 40, 67, 56, 32, 21, 56 };
+        //List<int> valueList = new List<int>() { 15, 15, 30, 40, 67, 56, 32, 21, 56 };
         ShowGraph(valueList);
     }
 
@@ -23,7 +24,7 @@ public class Window_graph2 : MonoBehaviour
         gameObject.GetComponent<Image>().sprite = circleSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = anchoredPosition;
-        rectTransform.sizeDelta = new Vector2(11, 11);
+        rectTransform.sizeDelta = new Vector2(5, 5);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
         return gameObject;
@@ -57,7 +58,7 @@ public class Window_graph2 : MonoBehaviour
     {
         GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, .5f);
+        gameObject.GetComponent<Image>().color = new Color(1, 0, 0, .5f);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         Vector2 dir = (dotPositionB - dotPositionA).normalized;
         float distance = Vector2.Distance(dotPositionA, dotPositionB);
