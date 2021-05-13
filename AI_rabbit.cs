@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -22,6 +23,7 @@ public class AI_rabbit : MonoBehaviour
     public int random2;//обход камня
     public GameObject rabbit;//игровой объект кролик
     public GameObject game;//пустой игровой объект со скриптом главной логики симулятора
+    public GameObject Graph;
     [Header("Button")]//название типа элемента в программе (кнопки)
     public Button plusrabbithealth;//кнопка увеличивающая жизнь кролику
     public Button minusrabbithealth;//кнопка уменьшающая жизнь кролику
@@ -89,7 +91,11 @@ public class AI_rabbit : MonoBehaviour
         Sumgrass = counter;
         grassSum = Sumgrass;
         Sumrabbit = counter2;//для вывода информации в unity в inspector
-        Window_graph.ShowGraph(Window_graph.valueList);
+        List<int> valueList = new List<int>() { 5, 23, 54, 67, 98, 32, 54, 65, 32 };
+        valueList.Add(counter2);
+        //if (AI_rabbit.counter2 > maxCounter2) maxCounter2 = AI_rabbit.counter2;
+        //List<int> valueList = new List<int>() {5, 23, 54, 67, 98, 32, 54, 65, 32};
+        Graph.GetComponent<Window_graph>().ShowGraph(valueList);
     }
 
     public void Plusrabbithealth()

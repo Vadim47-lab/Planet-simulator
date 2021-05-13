@@ -13,11 +13,11 @@ public class Window_graph : MonoBehaviour
     private void Awake()
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
-        List<int> valueList = new List<int>() { 1, 1 };
-        valueList.Add(AI_rabbit.counter2);
+        //List<int> valueList = new List<int>() { 1, 1 };
+        //valueList.Add(AI_rabbit.counter2);
         if (AI_rabbit.counter2 > maxCounter2) maxCounter2 = AI_rabbit.counter2;
         //List<int> valueList = new List<int>() {5, 23, 54, 67, 98, 32, 54, 65, 32};
-        ShowGraph(valueList);
+        //ShowGraph(valueList);
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -33,7 +33,7 @@ public class Window_graph : MonoBehaviour
         return gameObject;
     }
 
-    private void ShowGraph(List<int> valueList)
+    public void ShowGraph(List<int> valueList)
     {
         int i;
         float graphHeight = graphContainer.sizeDelta.y; //Определяем высоту контейнера для графика
