@@ -10,14 +10,15 @@ public class AI_rabbit : MonoBehaviour
     private float x = 0;//коррдинаты кролика по оси x
     private float y = 0;//коррдинаты кролика по оси y
     private int xGrass, yGrass;//коррдинаты травы
-    public int counter = 0; //количество съеденной травы, которое передается в файл Main для дальнейшего вывода на экран
+    private int counter = 0; //текущий счетчие съеденной травы (никуда не передается)
     public static int counter2 = 1;//количество кроликов, которое передается в файл Main для дальнейшего вывода на экран
     public float sumGrass = 0;//количество травы, которое съел кролик
     public static float grassSum = 0;//количество травы для отображения на экран через файл main
     public float Health = 40;//количество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
-    public static float counterGrass = 4;//текущая установка съеденной травы
+    public static float counterGrass = 4;//сколько надо съесть травы для размножения
     public static float health = 0;//количество здоровья у кролика, которое отображается в inspector в unity
     public static float Sumrabbit = 0;//количество кроликов, которое отображается в inspector в unity
+    public static float eatGrass2 = 0;
     public float Sumgrass = 0;//количество травы, которое отображается в inspector в unity
     public int randomT;//мозг кролика
     public int random2;//обход камня
@@ -51,13 +52,14 @@ public class AI_rabbit : MonoBehaviour
     {
         if (transform.position.y > 0.01)
         {
-            counter2--;
+            //counter2--;
+            Main.Sumrabbit--;
             Destroy(gameObject);
         }
         int xRabbit, yRabbit;
         transform.Rotate(x, y, z);
-        xRabbit = Mathf.RoundToInt(transform.position.x * 2f) + 1 ;
-        yRabbit = Mathf.RoundToInt(transform.position.z * 2f) + 1;
+        xRabbit = Mathf.RoundToInt(transform.position.x * 2f) - 1;
+        yRabbit = Mathf.RoundToInt(transform.position.z * 2f) - 1;
         GameObject grass = null;
         if (xRabbit >= 0 && xRabbit < 100 && yRabbit >= 0 && yRabbit < 100)
         {
@@ -69,19 +71,22 @@ public class AI_rabbit : MonoBehaviour
         {
             game.GetComponent<Main>().grass[xRabbit, yRabbit] = null;
             Destroy(grass);
-
-            sumGrass--;
+            Main.grassSum1--;
+            //sumGrass--;
             counter++;
+            if (Main.start == true) eatGrass2++;
             if (counter >= counterGrass)
             {
                 Health = 40;
                 create();
                 counter = 0;
-                counter2++;
+                //counter2++;
+                Main.Sumrabbit++;
                 maxChild--;
                 if (maxChild == 0)
                 {
-                    counter2--;
+                    // counter2--;
+                    Main.Sumrabbit--;
                     Destroy(gameObject);
                 }
             }
@@ -91,11 +96,13 @@ public class AI_rabbit : MonoBehaviour
         Sumgrass = counter;
         grassSum = Sumgrass;
         Sumrabbit = counter2;//для вывода информации в unity в inspector
-        List<int> valueList = new List<int>() { 5, 23, 54, 67, 98, 32, 54, 65, 32 };
-        valueList.Add(counter2);
+        // List<int> valueList = new List<int>() { 5, 23, 54, 67, 98, 32, 54, 65, 32 };
+        // valueList.Add(counter2);
         //if (AI_rabbit.counter2 > maxCounter2) maxCounter2 = AI_rabbit.counter2;
         //List<int> valueList = new List<int>() {5, 23, 54, 67, 98, 32, 54, 65, 32};
-        Graph.GetComponent<Window_graph>().ShowGraph(valueList);
+        // Graph.GetComponent<Window_graph>().ShowGraph(valueList);
+
+        // не должен кролик передавать инфу в граф, их же легион, Main.Sumrabbit вот где хранится нужно число для отображения
     }
 
     public void Plusrabbithealth()
@@ -123,7 +130,8 @@ public class AI_rabbit : MonoBehaviour
         age--;
         if (age == 0)
         {
-            counter2--;
+            //counter2--;
+            Main.Sumrabbit--;
             Destroy(gameObject);
         }
         //Получить случайное число (в диапазоне от 0 до 1)
@@ -203,8 +211,9 @@ public class AI_rabbit : MonoBehaviour
         if (Health <= 0 && tag == "rabbit")
         { 
             //GetComponent<Animator>().SetBool("Death", true);
-            Destroy(gameObject, 2f);
-            counter2--;
+            Destroy(gameObject);
+            //counter2--;
+            Main.Sumrabbit--;
         }
     }
 

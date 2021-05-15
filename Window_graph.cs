@@ -13,11 +13,13 @@ public class Window_graph : MonoBehaviour
     private void Awake()
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
+      
+
         //List<int> valueList = new List<int>() { 1, 1 };
         //valueList.Add(AI_rabbit.counter2);
-        if (AI_rabbit.counter2 > maxCounter2) maxCounter2 = AI_rabbit.counter2;
-        //List<int> valueList = new List<int>() {5, 23, 54, 67, 98, 32, 54, 65, 32};
-        //ShowGraph(valueList);
+        if (Main.Sumrabbit > maxCounter2) maxCounter2 = Main.Sumrabbit;
+        List<int> valueList = new List<int>() {5, 23, 54, 67, 98, 32, 54, 65, 32};
+        ShowGraph(valueList);
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
