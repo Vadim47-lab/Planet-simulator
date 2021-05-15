@@ -26,7 +26,10 @@ public class Window_graph : MonoBehaviour
         if (GameSeconds >= 10.0f)
         {
             if (Main.Sumrabbit > maxCounter2) maxCounter2 = Main.Sumrabbit;
-            CleanGraph(valueList);
+            //CleanGraph(valueList);
+            Destroy(GameObject.Find("circle"));
+            Destroy(GameObject.Find("dotConnection"));
+            //RectTransform.Series.Clear();
             valueList.Add(Main.Sumrabbit);
             ShowGraph(valueList);
             GameSeconds = 0.0f;
@@ -113,7 +116,7 @@ public class Window_graph : MonoBehaviour
     {
         GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().color = new Color(0, 170, 255, 1f);
+        gameObject.GetComponent<Image>().color = new Color(2, 170, 255, 1f);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         Vector2 dir = (dotPositionB - dotPositionA).normalized;
         float distance = Vector2.Distance(dotPositionA, dotPositionB);

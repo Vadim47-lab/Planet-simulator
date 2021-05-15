@@ -19,7 +19,7 @@ public class Window_graph2 : MonoBehaviour
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
     {
-        GameObject gameObject = new GameObject("circle", typeof(Image));
+        GameObject gameObject = new GameObject("circle2", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
         gameObject.GetComponent<Image>().sprite = circleSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
@@ -56,7 +56,7 @@ public class Window_graph2 : MonoBehaviour
 
     private void CreateDoConnection(Vector2 dotPositionA, Vector2 dotPositionB)
     {
-        GameObject gameObject = new GameObject("dotConnection", typeof(Image));
+        GameObject gameObject = new GameObject("dotConnection2", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
         gameObject.GetComponent<Image>().color = new Color(1, 0, 0, .5f);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
