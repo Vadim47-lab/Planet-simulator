@@ -13,6 +13,7 @@ public class Window_graph : MonoBehaviour
     public float GameSeconds;//количество секунд
     public List<int> valueList = new List<int>() { 1, 1 };
     int i;
+    bool refresh = false;
 
     private void Awake()
     {
@@ -24,20 +25,21 @@ public class Window_graph : MonoBehaviour
     {
         GameSeconds = GameSeconds + Time.deltaTime;
         CurrentTime += Time.deltaTime;
-        if (GameSeconds >= 10.0f)
+        if (GameSeconds >= 0.24f && GameSeconds <= 0.25f)
+        {
+            refresh = true;
+            Destroy(GameObject.Find("circle"));
+            Destroy(GameObject.Find("dotConnection"));
+        }
+        if (GameSeconds >= 0.25f && refresh == true) 
         {
             if (Main.Sumrabbit > maxCounter2) maxCounter2 = Main.Sumrabbit;
-            for (i = 0; i < 28; i++)
-            {
-                Destroy(GameObject.Find("circle2"));
-                Destroy(GameObject.Find("dotConnection2"));
-                Destroy(GameObject.Find("circle2"));
-                Destroy(GameObject.Find("dotConnection2"));
-            }
+            Debug.Log("i = " + i);
             valueList.Add(Main.Sumrabbit);
             ShowGraph(valueList);
-            GameSeconds = 0.0f;
+            refresh = false;
         }
+        if (GameSeconds >= 10f) GameSeconds = 0.0f;
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
