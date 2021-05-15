@@ -48,6 +48,8 @@ public class Main : MonoBehaviour
     public Button exit;//кнопка: выход из симулятора
     public Button stop;//кнопка: остановка симулятора
     public Button continue1;//кнопка: возобновление симуляции
+    //public Button continue2;//кнопка: возобновление симуляции
+    //public Button continue3;//кнопка: возобновление симуляции
     public Button close;//кнопка: закрытие панели информации и ее изменений
     public Button close2;//кнопка: закрытие панели изображения графика
     public Button plusspeedgame;//кнопка: увеличение скорости симуляции
@@ -64,6 +66,8 @@ public class Main : MonoBehaviour
         exit.onClick.AddListener(Exit);
         stop.onClick.AddListener(Stop);
         continue1.onClick.AddListener(Continue);
+        //continue2.onClick.AddListener(Continue2);
+        //continue3.onClick.AddListener(Continue3);
         close.onClick.AddListener(Close);
         close2.onClick.AddListener(Close2);
         plusspeedgame.onClick.AddListener(Plusspeedgame);
@@ -103,8 +107,29 @@ public class Main : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    /*public void Continue2()
+    {
+        winRabbit.SetActive(false);
+        Time.timeScale = 1f;
+        Targetgame.SetActive(false);
+        information.SetActive(false);
+        escape = false;
+        start = false;
+    }
+
+    public void Continue3()
+    {
+        winFox.SetActive(false);
+        Time.timeScale = 1f;
+        Targetgame.SetActive(false);
+        information.SetActive(false);
+        escape = false;
+        start = false;
+    }*/
+
     public void Close()
     {
+        escape = false;
         information.SetActive(false);
         help.SetActive(true);
     }
@@ -207,14 +232,12 @@ public class Main : MonoBehaviour
         {
             Time.timeScale = 0f;
             Window_grapg1.SetActive(false);
-            //information.SetActive(false);
             winRabbit.SetActive(true);
         }
         if (AI_fox.eatRabbit == 10)
         {
             Time.timeScale = 0f;
             Window_grapg1.SetActive(false);
-            //information.SetActive(false);
             winFox.SetActive(true);
         }
 
