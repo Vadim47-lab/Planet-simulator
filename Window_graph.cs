@@ -9,17 +9,29 @@ public class Window_graph : MonoBehaviour
     [SerializeField] private Sprite circleSprite;//создание спрайта, наша точка для построения графа
     private RectTransform graphContainer;
     public int maxCounter2 = 0;
+    public float CurrentTime;//считает колличество секунд
+    public float GameSeconds;//количество секунд
+    public List<int> valueList = new List<int>() { 1, 1 };
+    public List<int> emptyList = new List<int>() { 0, 0 };
 
     private void Awake()
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
-      
-
-        //List<int> valueList = new List<int>() { 1, 1 };
-        //valueList.Add(AI_rabbit.counter2);
-        if (Main.Sumrabbit > maxCounter2) maxCounter2 = Main.Sumrabbit;
-        List<int> valueList = new List<int>() {5, 23, 54, 67, 98, 32, 54, 65, 32};
         ShowGraph(valueList);
+    }
+
+    void Update()
+    {
+        GameSeconds = GameSeconds + Time.deltaTime;
+        CurrentTime += Time.deltaTime;
+        if (GameSeconds >= 10.0f)
+        {
+            if (Main.Sumrabbit > maxCounter2) maxCounter2 = Main.Sumrabbit;
+            valueList.Add(Main.Sumrabbit);
+            ShowGraph(emptyList);
+            ShowGraph(valueList);
+            GameSeconds = 0.0f;
+        }
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -72,11 +84,6 @@ public class Window_graph : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(distance, 3f);
         rectTransform.anchoredPosition = dotPositionA + dir * distance * .5f;
         rectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
-    }
-
-    void Update()
-    {
-        
     }
 
     void Start()
