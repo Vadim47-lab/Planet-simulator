@@ -18,8 +18,9 @@ public class Main : MonoBehaviour
     public GameObject Targetgame;//Цель симуляциии
     public GameObject winRabbit;//победа кроликов
     public GameObject winFox;//победа лис
+    public GameObject GameOver;
     public static int grassSum1 = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
-    public static int FoxSum = 1;//количество травы, значение которого берется из скрипта кролика и выводится на экран
+    public static int FoxSum = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
     public static int eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
     public float speedGame;//скорость игры, которое выводится на экран
     public float grassSpeed = 0.1f;//скорость роста травы, которое выводится на экран
@@ -32,6 +33,13 @@ public class Main : MonoBehaviour
     public bool escape = false;
     string StringSecond;//количество секунд в виде строки
     string StringMinutes;//количество минут в виде строки
+    public AudioClip OpenMenu;
+    public AudioClip OpenGraph;
+    public AudioClip CloseMenu;
+    public AudioClip CloseGraph;
+    public AudioClip Backfon;
+    public AudioClip gameOver;
+    public AudioClip gameOver2;
     [Header("Text")]//название типа элемента в программе (вывод текста и значений)
     public Text rabbits;//блок для вывода информации о количестве кроликах
     public Text grass2;//блок для вывода информации о количестве травы
@@ -60,9 +68,12 @@ public class Main : MonoBehaviour
     public KeyCode Escape = KeyCode.Escape;//обработка нажатия клавишы Esc
     public KeyCode Tab = KeyCode.Tab;//обработка нажатия клавишы Tab
     public KeyCode F = KeyCode.F;//обработка нажатия клавишы Enter
+    public KeyCode M = KeyCode.M;//обработка нажатия клавишы M
 
     void Start()
     {
+        //StartCoroutine(gameOver3());
+        escape = true;
         exit.onClick.AddListener(Exit);
         stop.onClick.AddListener(Stop);
         continue1.onClick.AddListener(Continue);
@@ -89,8 +100,16 @@ public class Main : MonoBehaviour
         grassSeeder(41, 41);
         InvokeRepeating("grassRun", grassSpeed, grassSpeed);
         Sumrabbit = 2;
-        FoxSum = 1;
+        FoxSum = 0;
     }
+
+    /*IEnumerator gameOver3()
+    { 
+            GameOver.SetActive(true);
+            yield return new WaitForSeconds(6.5f);
+            GetComponent<AudioSource>().PlayOneShot(gameOver2);
+            GetComponent<AudioSource>().PlayOneShot(gameOver);
+    }*/
 
     public void Exit()
     {
@@ -129,6 +148,7 @@ public class Main : MonoBehaviour
 
     public void Close()
     {
+        GetComponent<AudioSource>().PlayOneShot(CloseMenu);
         escape = false;
         information.SetActive(false);
         help.SetActive(true);
@@ -136,6 +156,7 @@ public class Main : MonoBehaviour
 
     public void Close2()
     {
+        GetComponent<AudioSource>().PlayOneShot(CloseGraph);
         Window_grapg1.SetActive(false);
         help.SetActive(true);
     }
@@ -210,14 +231,21 @@ public class Main : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(M))
+        {
+            GetComponent<AudioSource>().PlayOneShot(Backfon);
+        }
+
         if (Input.GetKeyDown(Escape))
         {
+            GetComponent<AudioSource>().PlayOneShot(OpenMenu);
             escape = true;
             information.SetActive(true);
             help.SetActive(false);
         }
         if (Input.GetKeyDown(Tab))
         {
+            GetComponent<AudioSource>().PlayOneShot(OpenGraph);
             Window_grapg1.SetActive(true);
             help.SetActive(false);
         }
@@ -228,17 +256,23 @@ public class Main : MonoBehaviour
             help2.SetActive(false);
         }
 
-        if (AI_rabbit.eatGrass2 == 20)
+        if (AI_rabbit.eatGrass2 == 30)
         {
             Time.timeScale = 0f;
             Window_grapg1.SetActive(false);
             winRabbit.SetActive(true);
         }
-        if (AI_fox.eatRabbit == 10)
+        if (AI_fox.eatRabbit == 5)
         {
             Time.timeScale = 0f;
             Window_grapg1.SetActive(false);
             winFox.SetActive(true);
+        }
+        if (Sumrabbit == 0)
+        {
+            GameOver.SetActive(true);
+            GetComponent<AudioSource>().PlayOneShot(gameOver2);
+            GetComponent<AudioSource>().PlayOneShot(gameOver);
         }
 
         // grassSum1 = grassSum1 + AI_rabbit.grassSum;

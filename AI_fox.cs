@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class AI_fox : MonoBehaviour
+public class AI_fox: MonoBehaviour
 {
     private float z = 0;//коррдинаты кролика по оси z
     private float x = 0;//коррдинаты кролика по оси x
@@ -19,7 +19,6 @@ public class AI_fox : MonoBehaviour
     public int maxChild = 2;//сколько лис можно родить
     private int counterRabbit = 2; //сколько нужно съесть кроликов для размножения
     public int age = 130;//биологический возраст максимальный
-
     public static float counter4 = 1;//колисчество созданных лис, для вывода на экран в Main
     public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
     public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
@@ -67,12 +66,11 @@ public class AI_fox : MonoBehaviour
         Main.FoxSum--;
     }
 
-    private void OnDestroy()
+    /*private void OnDestroy()
     {
         Debug.Log("Лиса умирает");
         Main.FoxSum--;
-    }
-
+    }*/
 
     void Update()
     {
@@ -147,24 +145,19 @@ public class AI_fox : MonoBehaviour
 
     private void life()
     {
-        Health--;
+        if (tag == "fox") Health--;
         if (Health <= 0 && tag == "fox")
         {
             //Main.FoxSum--;
             //GetComponent<Animator>().SetBool("Death", true);
             Destroy(gameObject);
+            Main.FoxSum--;
         }
     }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "stone")
-        {
-            y = 0;
-        }
-    }
+
     private void OnTriggerEnter(Collider other)
     {
-        random2 = Random.Range(0, 1);
+        random2 = Random.Range(0, 2);
         if (other.tag == "stone" && random2 == 0)
         {
             y = 2;
@@ -173,6 +166,11 @@ public class AI_fox : MonoBehaviour
         {
             y = -2;
         }
+        if (other.tag == "stone" && random2 == 2)
+        {
+            y = 0;
+        }
+
         if (other.tag == "rabbit" && Health < 20)
         {
             Health += 20;
@@ -195,9 +193,6 @@ public class AI_fox : MonoBehaviour
                     Destroy(gameObject);
                 }
             }
-           
-            
-            
         }
     }
 }

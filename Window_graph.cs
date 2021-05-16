@@ -11,7 +11,7 @@ public class Window_graph : MonoBehaviour
     public int maxCounter2 = 0;
     public float CurrentTime;//считает колличество секунд
     public float GameSeconds;//количество секунд
-    public List<int> valueList = new List<int>() { 1, 1 };
+    public List<int> valueList = new List<int>() { 2, 2 };
     int i;
     bool refresh = false;
 
@@ -23,23 +23,27 @@ public class Window_graph : MonoBehaviour
 
     void Update()
     {
+        if (valueList.Count == 20) valueList.RemoveAt(1);
         GameSeconds = GameSeconds + Time.deltaTime;
         CurrentTime += Time.deltaTime;
-        if (GameSeconds >= 0.24f && GameSeconds <= 0.25f)
+        if (GameSeconds <= 0.68f)
         {
-            refresh = true;
-            Destroy(GameObject.Find("circle"));
-            Destroy(GameObject.Find("dotConnection"));
+            if (AI_rabbit.counter2 != valueList[valueList.Count])
+            {
+                refresh = true;
+                Destroy(GameObject.Find("circle"));
+                Destroy(GameObject.Find("dotConnection"));
+            }
+            if (GameSeconds >= 0.69f && refresh == true)
+            {
+                if (Main.Sumrabbit > maxCounter2) maxCounter2 = Main.Sumrabbit;
+                Debug.Log("i = " + i);
+                valueList.Add(Main.Sumrabbit);
+                ShowGraph(valueList);
+                refresh = false;
+            }
+            if (GameSeconds >= 3f) GameSeconds = 0.0f;
         }
-        if (GameSeconds >= 0.25f && refresh == true) 
-        {
-            if (Main.Sumrabbit > maxCounter2) maxCounter2 = Main.Sumrabbit;
-            Debug.Log("i = " + i);
-            valueList.Add(Main.Sumrabbit);
-            ShowGraph(valueList);
-            refresh = false;
-        }
-        if (GameSeconds >= 10f) GameSeconds = 0.0f;
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -57,9 +61,11 @@ public class Window_graph : MonoBehaviour
 
     public void ShowGraph(List<int> valueList)
     {
+        //Перенести инициализацию на вверх
         float graphHeight = graphContainer.sizeDelta.y; //Определяем высоту контейнера для графика
         float graphWidth = graphContainer.sizeDelta.x; //Определяем ширину контейнера для графика
-        float yMaximum = 40;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
+        float yMaximum = 10;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
+        if (Main.Sumrabbit > 10) yMaximum = Main.Sumrabbit;
         float yMin = 1;//valueList.Min; //Вычисляем минимальное значение  по Y для всех значений списка valueList
         float xMaximum = valueList.Count - 1; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
         float xSize = graphWidth / xMaximum; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
@@ -80,6 +86,7 @@ public class Window_graph : MonoBehaviour
 
     private void CreateDoConnection(Vector2 dotPositionA, Vector2 dotPositionB)
     {
+        //Перенести инициализацию на вверх
         GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
         gameObject.GetComponent<Image>().color = new Color(1, 1, 1, .5f);

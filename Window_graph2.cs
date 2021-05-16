@@ -8,18 +8,46 @@ public class Window_graph2 : MonoBehaviour
 {
     [SerializeField] private Sprite circleSprite;//создание спрайта, наша точка для построения графа
     private RectTransform graphContainer;
+    public int maxCounter2 = 0;
+    public float CurrentTime;//считает колличество секунд
+    public float GameSeconds;//количество секунд
+    public List<int> valueList = new List<int>() { 1, 1 };
+    int i;
+    bool refresh = false;
 
     private void Awake()
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
-        List<int> valueList = new List<int>() { 15, 15, 30, 40, 67, 56, 32, 21, 56 };
-        //List<int> valueList = new List<int>() { 15, 15, 30, 40, 67, 56, 32, 21, 56 };
         ShowGraph(valueList);
+    }
+
+    void Update()
+    {
+        if (valueList.Count == 20) valueList.RemoveAt(1);
+        GameSeconds = GameSeconds + Time.deltaTime;
+        CurrentTime += Time.deltaTime;
+        if (GameSeconds <= 0.68f)
+        {
+            if (AI_rabbit.counter2 != valueList[valueList.Count])
+            {
+                refresh = true;
+                Destroy(GameObject.Find("circle2"));
+                Destroy(GameObject.Find("dotConnection2"));
+            }
+            if (GameSeconds >= 0.69f && refresh == true)
+            {
+                if (Main.FoxSum > maxCounter2) maxCounter2 = Main.FoxSum;
+                valueList.Add(Main.FoxSum);
+                ShowGraph(valueList);
+                refresh = false;
+            }
+            if (GameSeconds >= 3f) GameSeconds = 0.0f;
+        }
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
     {
-        GameObject gameObject = new GameObject("circle2", typeof(Image));
+        GameObject gameObject = new GameObject("circle", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
         gameObject.GetComponent<Image>().sprite = circleSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
@@ -30,16 +58,17 @@ public class Window_graph2 : MonoBehaviour
         return gameObject;
     }
 
-    private void ShowGraph(List<int> valueList)
+    public void ShowGraph(List<int> valueList)
     {
-        int i;
+        //Перенести инициализацию на вверх
         float graphHeight = graphContainer.sizeDelta.y; //Определяем высоту контейнера для графика
         float graphWidth = graphContainer.sizeDelta.x; //Определяем ширину контейнера для графика
-        float yMaximum = 98;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
-        float yMin = 5;//valueList.Min; //Вычисляем минимальное значение  по Y для всех значений списка valueList
+        float yMaximum = 10;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
+        if (Main.FoxSum > 10) yMaximum = Main.FoxSum;
+        float yMin = 1;//valueList.Min; //Вычисляем минимальное значение  по Y для всех значений списка valueList
         float xMaximum = valueList.Count - 1; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
         float xSize = graphWidth / xMaximum; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
-        float ySize = graphHeight / (yMaximum - yMin); //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
+        float ySize = (graphHeight - 15) / (yMaximum - yMin); //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
         GameObject LastCircleGameObject = null;
         for (i = 0; i < valueList.Count; i++)
         {
@@ -56,7 +85,8 @@ public class Window_graph2 : MonoBehaviour
 
     private void CreateDoConnection(Vector2 dotPositionA, Vector2 dotPositionB)
     {
-        GameObject gameObject = new GameObject("dotConnection2", typeof(Image));
+        //Перенести инициализацию на вверх
+        GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
         gameObject.GetComponent<Image>().color = new Color(1, 0, 0, .5f);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
@@ -70,11 +100,6 @@ public class Window_graph2 : MonoBehaviour
     }
 
     void Start()
-    {
-
-    }
-
-    void Update()
     {
 
     }
