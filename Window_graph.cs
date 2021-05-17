@@ -3,6 +3,7 @@ using CodeMonkey.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Window_graph : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class Window_graph : MonoBehaviour
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
         ShowGraph(valueList);
+        Debug.Log("Awake: valueList.Capacity = " + valueList.Capacity);
+        Console.WriteLine("Консоль Awake: valueList.Capacity = " + valueList.Capacity);
     }
 
     void Update()
@@ -29,8 +32,9 @@ public class Window_graph : MonoBehaviour
         if (GameSeconds <= 0.68f)
         {
             Debug.Log("AI_rabbit.counter2 = " + AI_rabbit.counter2);
-            Debug.Log("valueList[valueList.Count] = " + valueList[valueList.Count - 1]);
-            if (AI_rabbit.counter2 != valueList[valueList.Count - 1])
+            Debug.Log("Update: valueList.Count = " + valueList.Count);
+            Debug.Log("valueList[valueList.Count] = " + valueList[2]);
+            if (AI_rabbit.counter2 != valueList[valueList.Count] || valueList.Count == 0)
             {
                 refresh = true;
                 Destroy(GameObject.Find("circle"));
@@ -104,6 +108,6 @@ public class Window_graph : MonoBehaviour
 
     void Start()
     {
-
+        Debug.Log("Start: valueList.Count = " + valueList.Count);
     }
 }
