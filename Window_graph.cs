@@ -20,8 +20,7 @@ public class Window_graph : MonoBehaviour
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
         ShowGraph(valueList);
-        Debug.Log("Awake: valueList.Capacity = " + valueList.Capacity);
-        Console.WriteLine("Консоль Awake: valueList.Capacity = " + valueList.Capacity);
+        Debug.Log("Awake: valueList.Count = " + valueList.Count);
     }
 
     void Update()
@@ -31,11 +30,11 @@ public class Window_graph : MonoBehaviour
         CurrentTime += Time.deltaTime;
         if (GameSeconds <= 0.68f)
         {
-            Debug.Log("AI_rabbit.counter2 = " + AI_rabbit.counter2);
+           /*Debug.Log("AI_rabbit.counter2 = " + AI_rabbit.counter2);
             Debug.Log("Update: valueList.Count = " + valueList.Count);
             Debug.Log("valueList[valueList.Count] = " + valueList[2]);
             if (AI_rabbit.counter2 != valueList[valueList.Count] || valueList.Count == 0)
-            {
+            {*/
                 refresh = true;
                 Destroy(GameObject.Find("circle"));
                 Destroy(GameObject.Find("dotConnection"));
@@ -49,7 +48,7 @@ public class Window_graph : MonoBehaviour
                 refresh = false;
             }
             if (GameSeconds >= 3f) GameSeconds = 0.0f;
-        }
+        //}
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -64,37 +63,6 @@ public class Window_graph : MonoBehaviour
         rectTransform.anchorMax = new Vector2(0,0);
         return gameObject;
     }
-    
-    /*
-    http://virq.ru/theme164.html
-    
-    List<int> x = new List<int>() { 5, 27, -6, 14, 70, 14, 178 };
-x.Remove(14);
-    
-    List<int> x = new List<int>() { 5, 27, -6, 14, 70, 14, 178 };
-int n = x.Count;       //7 элементов
-int m = x.Count - 1;   //Получить индекс последнего элемента
-    
-    List<int> x = new List<int>() { 5, 27, -6, 14, 70, 14, 178 };
-x.Reverse();          //Получить обратный порядок элементов, т.е. 178, 14, 70, 14, -6, 27, 51
-x.Sort();             //Сортировать элементы по порядку с увеличением
-int a = x.Min();      //Найти наименьшее значение в списке. Получим -6
-int b = x.Max();      //Найти наибольшее значение в списке. Получим 178
-int c = x.Sum();      //Найти сумму элементов. Получим 302
-int d = x.Average();  //Найти среднее значение чисел. Получим примерно 43,14
-
-List<int> x = new List<int>() { 5, 27, -6, 14, 70, 14, 178 };
-x.Insert(1, 1000);
-
-List<int> x = new List<int>() { 5, 27, -6, 14, 70, 14, 178 };
-int a = x.IndexOf(5);     //Получим 0-ую позицию
-int b = x.IndexOf(-6);    //Получим 2-ую позицию
-int k = x.IndexOf(70);    //Получим 4-ую позицию
-int q = x.IndexOf(166);   //Получим -1
-
-List<int> x = new List<int>() { 5, 27, -6, 14, 70, 14, 178 };
-x.RemoveAt(2);    //Будет удалён 3-ий элемент по счёту
-    */
 
     public void ShowGraph(List<int> valueList)
     {

@@ -28,8 +28,8 @@ public class Window_graph2 : MonoBehaviour
         CurrentTime += Time.deltaTime;
         if (GameSeconds <= 0.68f)
         {
-            if (AI_rabbit.counter2 != valueList[valueList.Count])
-            {
+            //if (AI_rabbit.counter2 != valueList[valueList.Count])
+            //{
                 refresh = true;
                 Destroy(GameObject.Find("circle2"));
                 Destroy(GameObject.Find("dotConnection2"));
@@ -42,7 +42,7 @@ public class Window_graph2 : MonoBehaviour
                 refresh = false;
             }
             if (GameSeconds >= 3f) GameSeconds = 0.0f;
-        }
+        //}
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -88,7 +88,7 @@ public class Window_graph2 : MonoBehaviour
         //Перенести инициализацию на вверх
         GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().color = new Color(1, 0, 0, .5f);
+        gameObject.GetComponent<Image>().color = new Color(1, 0, 0, .25f);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         Vector2 dir = (dotPositionB - dotPositionA).normalized;
         float distance = Vector2.Distance(dotPositionA, dotPositionB);
