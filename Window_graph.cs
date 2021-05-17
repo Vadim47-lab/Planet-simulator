@@ -28,7 +28,9 @@ public class Window_graph : MonoBehaviour
         CurrentTime += Time.deltaTime;
         if (GameSeconds <= 0.68f)
         {
-            if (AI_rabbit.counter2 != valueList[valueList.Count])
+            Debug.Log("AI_rabbit.counter2 = " + AI_rabbit.counter2);
+            Debug.Log("valueList[valueList.Count] = " + valueList[valueList.Count - 1]);
+            if (AI_rabbit.counter2 != valueList[valueList.Count - 1])
             {
                 refresh = true;
                 Destroy(GameObject.Find("circle"));
