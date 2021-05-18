@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
 public class Window_graph : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class Window_graph : MonoBehaviour
     public int maxCounter2 = 0;
     public float CurrentTime;//считает количество секунд
     public float GameSeconds;//количество секунд
-    public List<int> valueRabbitList = new List<int>() { 1, 1, 1, 1 };
+    public List<int> valueRabbitList = new List<int>() { 1 };
     int i;
     bool refresh = false;
 
@@ -101,11 +102,11 @@ x.RemoveAt(2); //Будет удалён 3-ий элемент по счёту
         float yMaximum = 10;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
         if (Main.Sumrabbit > 10) yMaximum = Main.Sumrabbit;
         float yMin = 1;//valueRabbitList.Min; //Вычисляем минимальное значение по Y для всех значений списка valueList
-        float xMaximum = valueRabbitList[valueRabbitList.Count - 1]; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
-        float xSize = graphWidth / xMaximum; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
+        //float xMaximum = valueRabbitList[valueRabbitList.Count - 1]; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
+        float xSize = graphWidth / valueRabbitList.Max(); //50f;//Вычисляем нормировочный коэффициент масштабирования по X
         float ySize = (graphHeight - 15) / (yMaximum - yMin); //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
         GameObject LastCircleGameObject = null;
-        for (i = 0; i < valueRabbitList.Count; i++)
+        for (i = 0; i < valueRabbitList.Count - 1; i++)
         {
             float xPosition = i * xSize; //Вычисляем позицию X для очередной точки на графике
             float yPosition = valueRabbitList[i] * ySize;//Вычисляем позицию Y для очередной точки на графике
