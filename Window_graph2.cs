@@ -18,8 +18,6 @@ public class Window_graph2 : MonoBehaviour
     private void Awake()
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
-        //Debug.Log("Awake: valueFoxList.Count = " + valueFoxList.Count);
-        valueFoxList.RemoveAll();
         ShowGraph(valueFoxList);
     }
 
@@ -28,23 +26,20 @@ public class Window_graph2 : MonoBehaviour
         if (valueFoxList.Count == 20) valueFoxList.RemoveAt(1);
         GameSeconds = GameSeconds + Time.deltaTime;
         CurrentTime += Time.deltaTime;
-        if (GameSeconds <= 0.68f)
+        if (GameSeconds >= 0.25f && GameSeconds <= 0.68f)
         {
-            if (valueRabbitList.Count == 0 || Main.FoxSum !== valueFoxList[valueFoxList.Count] )
+                refresh = true;
+                Destroy(GameObject.Find("circle2"));
+                Destroy(GameObject.Find("dotConnection2"));
+        }
+            if (GameSeconds >= 0.69f && refresh == true)
             {
-                    refresh = true;
-                    Destroy(GameObject.Find("circle2"));
-                    Destroy(GameObject.Find("dotConnection2"));
-                }
-                if (GameSeconds >= 0.69f && refresh == true)
-                {
-                    if (Main.FoxSum > maxCounter2) maxCounter2 = Main.FoxSum;
-                    valueFoxList.Add(Main.FoxSum);
-                    ShowGraph(valueFoxList);
-                    refresh = false;
-                }
-                if (GameSeconds >= 3f) GameSeconds = 0.0f;
+                if (Main.FoxSum > maxCounter2) maxCounter2 = Main.FoxSum;
+                valueFoxList.Add(Main.FoxSum);
+                ShowGraph(valueFoxList);
+                refresh = false;
             }
+            if (GameSeconds >= 3f) GameSeconds = 0.0f;
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -67,12 +62,12 @@ public class Window_graph2 : MonoBehaviour
         float graphWidth = graphContainer.sizeDelta.x; //Определяем ширину контейнера для графика
         float yMaximum = 10;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
         if (Main.FoxSum > 10) yMaximum = Main.FoxSum;
-        float yMin = 1;//valueList.Min; //Вычисляем минимальное значение  по Y для всех значений списка valueList
+        float yMin = 1;//valueList.Min; //Вычисляем минимальное значение по Y для всех значений списка valueList
         float xMaximum = valueFoxList.Count - 1; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
         float xSize = graphWidth / xMaximum; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
         float ySize = (graphHeight - 15) / (yMaximum - yMin); //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
         GameObject LastCircleGameObject = null;
-        for (i = 0; i < valueFoxList.Count; i++)
+        for (i = 0; i < valueFoxList.Count - 1; i++)
         {
             float xPosition = i * xSize; //Вычисляем позицию X для очередной точки на графике
             float yPosition = valueFoxList[i] * ySize;//Вычисляем позицию Y для очередной точки на графике

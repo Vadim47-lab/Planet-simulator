@@ -13,15 +13,13 @@ public class Window_graph : MonoBehaviour
     public int maxCounter2 = 0;
     public float CurrentTime;//считает количество секунд
     public float GameSeconds;//количество секунд
-    public List<int> valueRabbitList = new List<int>() { 1 };
+    public List<int> valueRabbitList = new List<int>() { 1, 1 };
     int i;
     bool refresh = false;
 
     private void Awake()
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
-        //Debug.Log("Awake: valueRabbitList.Count = " + valueRabbitList.Count);
-        //valueRabbitList.RemoveAll();
         ShowGraph(valueRabbitList);
     }
 
@@ -30,13 +28,13 @@ public class Window_graph : MonoBehaviour
         if (valueRabbitList.Count == 20) valueRabbitList.RemoveAt(1);
         GameSeconds = GameSeconds + Time.deltaTime;
         CurrentTime += Time.deltaTime;
-        if (GameSeconds <= 0.68f)
+        /*if (GameSeconds <= 0.68f)
         {
             Debug.Log("AI_rabbit.counter2 = " + AI_rabbit.counter2);
             Debug.Log("Update: valueRabbitList.Count = " + valueRabbitList.Count);
             Debug.Log("valueRabbitList[valueRabbitList.Count] = " + valueRabbitList[valueRabbitList.Count - 1]);
-        }
-            if (Main.Sumrabbit != valueRabbitList[valueRabbitList.Count - 1])
+        }*/
+            if (GameSeconds >= 0.25f && GameSeconds <= 0.68f)
             {
                 refresh = true;
                 Destroy(GameObject.Find("circle"));
@@ -103,7 +101,8 @@ x.RemoveAt(2); //Будет удалён 3-ий элемент по счёту
         if (Main.Sumrabbit > 10) yMaximum = Main.Sumrabbit;
         float yMin = 1;//valueRabbitList.Min; //Вычисляем минимальное значение по Y для всех значений списка valueList
         //float xMaximum = valueRabbitList[valueRabbitList.Count - 1]; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
-        float xSize = graphWidth / valueRabbitList.Max(); //50f;//Вычисляем нормировочный коэффициент масштабирования по X
+        float xMaximum = valueRabbitList.Count - 1;
+        float xSize = graphWidth / xMaximum; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
         float ySize = (graphHeight - 15) / (yMaximum - yMin); //100f;//Вычисляем нормировочный коэффициент масштабирования по Y
         GameObject LastCircleGameObject = null;
         for (i = 0; i < valueRabbitList.Count - 1; i++)
@@ -126,7 +125,7 @@ x.RemoveAt(2); //Будет удалён 3-ий элемент по счёту
         gameObject.transform.SetParent(graphContainer, false);
         gameObject.GetComponent<Image>().color = new Color(1, 1, 1, .5f);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
-        Vector2 dir = (dotPositionB - dotPositionA);
+        Vector2 dir = (dotPositionB - dotPositionA).normalized;
         float distance = Vector2.Distance(dotPositionA, dotPositionB);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
