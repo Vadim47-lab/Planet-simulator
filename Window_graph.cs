@@ -25,7 +25,7 @@ public class Window_graph : MonoBehaviour
 
     void Update()
     {
-        if (valueRabbitList.Count == 20) valueRabbitList.RemoveAt(1);
+        if (valueRabbitList.Count == 20) valueRabbitList.RemoveAt(0);
         GameSeconds = GameSeconds + Time.deltaTime;
         CurrentTime += Time.deltaTime;
         /*if (GameSeconds <= 0.68f)
