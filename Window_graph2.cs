@@ -23,7 +23,7 @@ public class Window_graph2 : MonoBehaviour
 
     void Update()
     {
-        if (valueFoxList.Count == 20) valueFoxList.RemoveAt(1);
+        if (valueFoxList.Count == 20) valueFoxList.RemoveAt(0);
         GameSeconds = GameSeconds + Time.deltaTime;
         CurrentTime += Time.deltaTime;
         if (GameSeconds >= 0.25f && GameSeconds <= 0.68f)
