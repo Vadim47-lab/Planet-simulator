@@ -14,27 +14,30 @@ public class AI_fox: MonoBehaviour
     public static float health = 0;//колличество здоровья у лисы, которое передается в файл Main для дальнейшего вывода на экран
     public GameObject target = null;//игровой объект для поедания лисой
     public GameObject fox;//игровой объект лиса
+    public static GameObject Fox;//игровой объект лиса
     public int random2;//обход камня
     public int random;//мозг лисы
-    public int maxChild = 2;//сколько лис можно родить
+    public int maxChild = 3;//сколько лис можно родить
+    public static int MaxChild = 0;
     private int counterRabbit = 2; //сколько нужно съесть кроликов для размножения
     public int age = 130;//биологический возраст максимальный
+    public static int Age = 0;
     public static float counter4 = 1;//колисчество созданных лис, для вывода на экран в Main
-    public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
-    public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
-    public Button plusfoxcounter;//кнопка увеличивающая количество созданных лис
-    public Button minusfoxcounter;//кнопка уменьшающая количество созданных лис
+   // public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
+   // public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
+   // public Button plusfoxcounter;//кнопка увеличивающая количество созданных лис
+   // public Button minusfoxcounter;//кнопка уменьшающая количество созданных лис
 
     void Start()
     {
         Main.FoxSum++;
-        int counterRabbit = 2;
-        maxChild = 2;
+        //int counterRabbit = 2;
+        maxChild = 3;
         age = 130;
-        plusfoxhealth.onClick.AddListener(Plusfoxhealth);
-        minusfoxhealth.onClick.AddListener(Minusfoxhealth);
-        plusfoxcounter.onClick.AddListener(Plusfoxcounter);
-        minusfoxcounter.onClick.AddListener(Minusfoxcounter);
+      //  plusfoxhealth.onClick.AddListener(Plusfoxhealth);
+      //  minusfoxhealth.onClick.AddListener(Minusfoxhealth);
+      //  plusfoxcounter.onClick.AddListener(Plusfoxcounter);
+       // minusfoxcounter.onClick.AddListener(Minusfoxcounter);
         target = null;
         //GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
         //target = rabbits[Random.Range(0, rabbits.Length)];
@@ -57,36 +60,27 @@ public class AI_fox: MonoBehaviour
     public void Plusfoxcounter()
     {
         Debug.Log("Лиса Рождается++");
-        Main.FoxSum++;
+        //Main.FoxSum++;
         Instantiate(fox, transform.position, transform.rotation);
     }
 
     public void Minusfoxcounter()
     {
-        Main.FoxSum--;
+        //Main.FoxSum--;
     }
-
-    /*private void OnDestroy()
-    {
-        Debug.Log("Лиса умирает");
-        Main.FoxSum--;
-    }*/
 
     void Update()
     {
+        Fox = fox;
+        Age = age;
+        MaxChild = maxChild;
+        transform.Rotate(x, y, z);
         if (transform.position.y > 0.01)
         {
-            Main.FoxSum--;
+            //Main.FoxSum--;
             Destroy(gameObject);
         }
-
         health = Health;
-    }
-
-    void FixedUpdate()
-    {
-        transform.Rotate(x, y, z);
-        //transform.LookAt(target.transform.position);
     }
 
     private void brain()
@@ -94,7 +88,7 @@ public class AI_fox: MonoBehaviour
         age--;
         if (age == 0)
         {
-            Main.FoxSum--;
+            //Main.FoxSum--;
             Destroy(gameObject);
         }
         random = Random.Range(0, 10);
@@ -148,11 +142,15 @@ public class AI_fox: MonoBehaviour
         if (tag == "fox") Health--;
         if (Health <= 0 && tag == "fox")
         {
-            //Main.FoxSum--;
             //GetComponent<Animator>().SetBool("Death", true);
             Destroy(gameObject);
-            Main.FoxSum--;
+            //Main.FoxSum--;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Main.FoxSum--;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -178,12 +176,12 @@ public class AI_fox: MonoBehaviour
             Destroy(other.gameObject);
             if (Main.start == true) eatRabbit++;
             counterRabbit--;
-            Main.Sumrabbit--;
+            //Main.Sumrabbit--;
 
             if (counterRabbit <= 0)
             { //родим лису если съедено нужное количество кроликов
                 counterRabbit = 2;
-                Main.FoxSum++;
+                //Main.FoxSum++;
                 Health = 60;
                 Instantiate(fox, transform.position, transform.rotation);
                 maxChild--;

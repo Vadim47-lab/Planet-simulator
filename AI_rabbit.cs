@@ -26,21 +26,25 @@ public class AI_rabbit : MonoBehaviour
     public GameObject game;//пустой игровой объект со скриптом главной логики симулятора
     public GameObject Graph;
     [Header("Button")]//название типа элемента в программе (кнопки)
-    public Button plusrabbithealth;//кнопка увеличивающая жизнь кролику
-    public Button minusrabbithealth;//кнопка уменьшающая жизнь кролику
-    public Button pluseatgrass;//кнопка увеличивающая колличество сЪеденной травы
-    public Button minuseatgrass;//кнопка уменьшающая колличество сЪеденной травы
+    //public Button plusrabbithealth;//кнопка увеличивающая жизнь кролику
+    //public Button minusrabbithealth;//кнопка уменьшающая жизнь кролику
+    //public Button pluseatgrass;//кнопка увеличивающая колличество сЪеденной травы
+    //public Button minuseatgrass;//кнопка уменьшающая колличество сЪеденной травы
     public int maxChild = 4;//сколько кроликов можно родить
+    public static int MaxChild = 0;
     public int age = 220;//биологический возраст максимальный
+    public static int Age = 0;
+    public BoxCollider hitBox;
 
     void Start()
     {
+        Main.Sumrabbit++;
         age = 220;
         maxChild = 4;
-        plusrabbithealth.onClick.AddListener(Plusrabbithealth);
-        minusrabbithealth.onClick.AddListener(Minusrabbithealth);
-        pluseatgrass.onClick.AddListener(Pluseatgrass);
-        minuseatgrass.onClick.AddListener(Minuseatgrass);
+        //plusrabbithealth.onClick.AddListener(Plusrabbithealth);
+        //minusrabbithealth.onClick.AddListener(Minusrabbithealth);
+        //pluseatgrass.onClick.AddListener(Pluseatgrass);
+        //minuseatgrass.onClick.AddListener(Minuseatgrass);
         xGrass = Random.Range(0, 99);
         yGrass = Random.Range(0, 99);
         if (tag == "rabbit") Health = 40;
@@ -50,10 +54,12 @@ public class AI_rabbit : MonoBehaviour
 
     void Update()
     {
+        if (age > 200) hitBox.enabled = false;
+        else hitBox.enabled = true;
         if (transform.position.y > 0.01)
         {
             //counter2--;
-            Main.Sumrabbit--;
+            //Main.Sumrabbit--;
             Destroy(gameObject);
         }
         int xRabbit, yRabbit;
@@ -81,12 +87,12 @@ public class AI_rabbit : MonoBehaviour
                 create();
                 counter = 0;
                 //counter2++;
-                Main.Sumrabbit++;
+                //Main.Sumrabbit++;
                 maxChild--;
                 if (maxChild == 0)
                 {
                     // counter2--;
-                    Main.Sumrabbit--;
+                    //Main.Sumrabbit--;
                     Destroy(gameObject);
                 }
             }
@@ -96,6 +102,8 @@ public class AI_rabbit : MonoBehaviour
         Sumgrass = counter;
         grassSum = Sumgrass;
         Sumrabbit = counter2;//для вывода информации в unity в inspector
+        Age = age;
+        MaxChild = maxChild;
         // List<int> valueList = new List<int>() { 5, 23, 54, 67, 98, 32, 54, 65, 32 };
         // valueList.Add(counter2);
         //if (AI_rabbit.counter2 > maxCounter2) maxCounter2 = AI_rabbit.counter2;
@@ -131,7 +139,7 @@ public class AI_rabbit : MonoBehaviour
         if (age == 0)
         {
             //counter2--;
-            Main.Sumrabbit--;
+            //Main.Sumrabbit--;
             Destroy(gameObject);
         }
         //Получить случайное число (в диапазоне от 0 до 1)
@@ -213,8 +221,13 @@ public class AI_rabbit : MonoBehaviour
             //GetComponent<Animator>().SetBool("Death", true);
             Destroy(gameObject);
             //counter2--;
-            Main.Sumrabbit--;
+            //Main.Sumrabbit--;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Main.Sumrabbit--;
     }
 
     private GameObject findGrass()

@@ -22,9 +22,10 @@ public class Main : MonoBehaviour
     public static int grassSum1 = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
     public static int FoxSum = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
     public static int eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
-    public float speedGame;//скорость игры, которое выводится на экран
-    public float grassSpeed = 0.1f;//скорость роста травы, которое выводится на экран
-    public static int Sumrabbit = 2; //Количество кроликов
+    public static float speedGame;//скорость игры, которое выводится на экран
+    public float grassSpeed = 5f;//скорость роста травы, которое выводится на экран
+    public static float GrassSpeed = 0;
+    public static int Sumrabbit = 0; //Количество кроликов
     public float time = 1;
     public float CurrentTime;//считает колличество секунд
     public float GameSeconds;//количество секунд
@@ -64,6 +65,14 @@ public class Main : MonoBehaviour
     public Button minusspeedgame;//кнопка: уменьшение скорости симуляции
     public Button plusgrowthrate;//кнопка: увеличение скорости роста травы
     public Button minusgrowthrate;//кнопка: уменьшение скорости роста травы
+    public Button plusrabbithealth;//кнопка увеличивающая жизнь кролику
+    public Button minusrabbithealth;//кнопка уменьшающая жизнь кролику
+    public Button pluseatgrass;//кнопка увеличивающая колличество сЪеденной травы
+    public Button minuseatgrass;//кнопка уменьшающая колличество сЪеденной травы
+    public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
+    public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
+    public Button plusfoxcounter;//кнопка увеличивающая количество созданных лис
+    public Button minusfoxcounter;//кнопка уменьшающая количество созданных лис
     [Header("Keys")]//название типа элемента в программе (клавишы)
     public KeyCode Escape = KeyCode.Escape;//обработка нажатия клавишы Esc
     public KeyCode Tab = KeyCode.Tab;//обработка нажатия клавишы Tab
@@ -85,6 +94,14 @@ public class Main : MonoBehaviour
         minusspeedgame.onClick.AddListener(Minusspeedgame);
         plusgrowthrate.onClick.AddListener(Plusgrowthrate);
         minusgrowthrate.onClick.AddListener(Minusgrowthrate);
+        plusfoxhealth.onClick.AddListener(Plusfoxhealth);
+        minusfoxhealth.onClick.AddListener(Minusfoxhealth);
+        plusfoxcounter.onClick.AddListener(Plusfoxcounter);
+        minusfoxcounter.onClick.AddListener(Minusfoxcounter);
+        plusrabbithealth.onClick.AddListener(Plusrabbithealth);
+        minusrabbithealth.onClick.AddListener(Minusrabbithealth);
+        pluseatgrass.onClick.AddListener(Pluseatgrass);
+        minuseatgrass.onClick.AddListener(Minuseatgrass);
         Time.timeScale = 1;
         grassSeeder(50, 50);
         grassSeeder(55, 50);
@@ -99,7 +116,7 @@ public class Main : MonoBehaviour
         grassSeeder(45, 45);
         grassSeeder(41, 41);
         InvokeRepeating("grassRun", grassSpeed, grassSpeed);
-        Sumrabbit = 2;
+        Sumrabbit = 0;
         FoxSum = 0;
     }
 
@@ -161,6 +178,48 @@ public class Main : MonoBehaviour
         help.SetActive(true);
     }
 
+    public void Plusfoxhealth()
+    {
+        AI_fox.health++;
+    }
+
+    public void Minusfoxhealth()
+    {
+        AI_fox.health--;
+    }
+
+    public void Plusfoxcounter()
+    {
+        Debug.Log("Лиса Рождается++");
+        Main.FoxSum++;
+        Instantiate(AI_fox.Fox, transform.position, transform.rotation);
+    }
+
+    public void Minusfoxcounter()
+    {
+        Main.FoxSum--;
+    }
+
+    public void Plusrabbithealth()
+    {
+        AI_rabbit.health++;
+    }
+
+    public void Minusrabbithealth()
+    {
+        AI_rabbit.health--;
+    }
+
+    public void Pluseatgrass()
+    {
+        AI_rabbit.counterGrass++;
+    }
+
+    public void Minuseatgrass()
+    {
+        AI_rabbit.counterGrass--;
+    }
+
     public void Plusspeedgame()
     {
         Time.timeScale++;
@@ -183,7 +242,7 @@ public class Main : MonoBehaviour
 
     private void grassSeeder(int x, int y)
     {
-        GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.4f, 0.4f), 0, y * 0.5f + Random.Range(-0.4f, 0.4f)), transform.rotation);
+        GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.1f, 0.1f), 0, y * 0.5f + Random.Range(-0.1f, 0.1f)), transform.rotation);
         grass[x, y] = plant; // - трава
         grassSum1++;
 
@@ -191,7 +250,7 @@ public class Main : MonoBehaviour
 
     private void grassFantomSeeder(int x, int y)
     {
-        GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.4f, 0.4f), 0, y * 0.5f + Random.Range(-0.4f, 0.4f)), transform.rotation);
+        GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.1f, 0.1f), 0, y * 0.5f + Random.Range(-0.1f, 0.1f)), transform.rotation);
         grassFantom[x, y] = plant; // - трава
         grassSum1++;
     }
@@ -268,16 +327,17 @@ public class Main : MonoBehaviour
             Window_grapg1.SetActive(false);
             winFox.SetActive(true);
         }
-        if (Sumrabbit == 0)
+        /*if (Sumrabbit == 0)
         {
             GameOver.SetActive(true);
             GetComponent<AudioSource>().PlayOneShot(gameOver2);
             GetComponent<AudioSource>().PlayOneShot(gameOver);
-        }
+        }*/
 
         // grassSum1 = grassSum1 + AI_rabbit.grassSum;
         speedGame = Time.timeScale;// для вывода информации в unity в inspector
 
+        GrassSpeed = grassSpeed;
         GameSeconds = GameSeconds + Time.deltaTime;
         StringSecond = GameSeconds.ToString();
         StringMinutes = GameMinutes.ToString();
