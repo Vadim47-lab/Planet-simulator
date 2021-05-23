@@ -338,6 +338,7 @@ public class Main : MonoBehaviour
         speedGame = Time.timeScale;// для вывода информации в unity в inspector
 
         GrassSpeed = grassSpeed;
+
         GameSeconds = GameSeconds + Time.deltaTime;
         StringSecond = GameSeconds.ToString();
         StringMinutes = GameMinutes.ToString();
