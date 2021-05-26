@@ -12,14 +12,14 @@ public class AI_rabbit : MonoBehaviour
     private int xGrass, yGrass;//коррдинаты травы
     private int counter = 0; //текущий счетчие съеденной травы (никуда не передается)
     public static int counter2 = 1;//количество кроликов, которое передается в файл Main для дальнейшего вывода на экран
-    public float sumGrass = 0;//количество травы, которое съел кролик
-    public static float grassSum = 0;//количество травы для отображения на экран через файл main
+    public int sumGrass = 0;//количество травы, которое съел кролик
+    public static int grassSum = 0;//количество травы для отображения на экран через файл main
     public float Health = 40;//количество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
     public static float counterGrass = 4;//сколько надо съесть травы для размножения
-    public static float health = 0;//количество здоровья у кролика, которое отображается в inspector в unity
-    public static float Sumrabbit = 0;//количество кроликов, которое отображается в inspector в unity
+    public static float StartHealth = 40;//количество здоровья у кролика, которое нужно для передачи
+    public static int Sumrabbit = 0;//количество кроликов, которое отображается в inspector в unity
     public static float eatGrass2 = 0;
-    public float Sumgrass = 0;//количество травы, которое отображается в inspector в unity
+    public int Sumgrass = 0;//количество травы, которое отображается в inspector в unity
     public int randomT;//мозг кролика
     public int random2;//обход камня
     public GameObject rabbit;//игровой объект кролик
@@ -47,7 +47,7 @@ public class AI_rabbit : MonoBehaviour
         //minuseatgrass.onClick.AddListener(Minuseatgrass);
         xGrass = Random.Range(0, 99);
         yGrass = Random.Range(0, 99);
-        if (tag == "rabbit") Health = 40;
+        if (tag == "rabbit") Health = StartHealth;
         InvokeRepeating("brain", 0, 1f);
         InvokeRepeating("life", 1f, 1f);
     }
@@ -69,13 +69,13 @@ public class AI_rabbit : MonoBehaviour
         GameObject grass = null;
         if (xRabbit >= 0 && xRabbit < 100 && yRabbit >= 0 && yRabbit < 100)
         {
-            grass = game.GetComponent<Main>().grass[xRabbit, yRabbit];
+            grass = Main.grass[xRabbit, yRabbit];
         }
 
         //if (Health > game.GetComponent<Main>().healthRabbit) Health = game.GetComponent<Main>().healthRabbit;
         if (grass != null && Health <= 20)
         {
-            game.GetComponent<Main>().grass[xRabbit, yRabbit] = null;
+            Main.grass[xRabbit, yRabbit] = null;
             Destroy(grass);
             Main.grassSum1--;
             //sumGrass--;
@@ -83,7 +83,7 @@ public class AI_rabbit : MonoBehaviour
             if (Main.start == true) eatGrass2++;
             if (counter >= counterGrass)
             {
-                Health = 40;
+                if (tag == "rabbit") Health = StartHealth;
                 create();
                 counter = 0;
                 //counter2++;
@@ -98,10 +98,8 @@ public class AI_rabbit : MonoBehaviour
             }
             
         }
-        health = Health;
-        Sumgrass = counter;
-        grassSum = Sumgrass;
         Sumrabbit = counter2;//для вывода информации в unity в inspector
+        counter2 = Sumrabbit;
         Age = age;
         MaxChild = maxChild;
         // List<int> valueList = new List<int>() { 5, 23, 54, 67, 98, 32, 54, 65, 32 };
@@ -155,7 +153,7 @@ public class AI_rabbit : MonoBehaviour
            case 2:
            case 3:
            case 4:
-               if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
                y = 0;
                break;
            case 5:
@@ -173,13 +171,13 @@ public class AI_rabbit : MonoBehaviour
            case 11:
                 y = 0;
                 GameObject grass = null;
-                if (game.GetComponent<Main>().grass[xGrass, yGrass] == null)
+                if (Main.grass[xGrass, yGrass] == null)
                 {
                     grass = findGrass();
                 }
                 else
                 {
-                    grass = game.GetComponent<Main>().grass[xGrass, yGrass];
+                    grass = Main.grass[xGrass, yGrass];
                 }
                 if (grass == null)
                 {
@@ -238,7 +236,7 @@ public class AI_rabbit : MonoBehaviour
         {
             for (j = 0; j < 100; j++)
             {
-                if (game.GetComponent<Main>().grass[i, j] != null) count++;
+                if (Main.grass[i, j] != null) count++;
             }
         }
         int random = Random.Range(1, count);
@@ -247,7 +245,7 @@ public class AI_rabbit : MonoBehaviour
         {
            for (j = 0; j < 100; j++)
            {
-                GameObject grass = game.GetComponent<Main>().grass[i, j];
+                GameObject grass = Main.grass[i, j];
                 if (grass != null)
                 {
                     count++;

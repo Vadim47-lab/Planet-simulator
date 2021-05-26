@@ -14,12 +14,13 @@ public class start : MonoBehaviour
     string StringMinutes;//количество минут в виде строки
     [Header("AudioClip")]//название типа элемента в программе (вывод аудиоклипа)
     public AudioClip OpenMenu;
+    public AudioClip CloseMenu;
+    public AudioClip OpenAuthor;
+    public AudioClip CloseAuthor;
     [Header("GameObject")]//название типа элемента в программе (вывод игровых объектов)
-    public GameObject information;//игровой объект в виде панели для отображения и изменения информации объектов симулятора  public GameObject Window_grapg1;//игровой объект в виде панели для отображения графика об информации в симуляторе
-    public GameObject help;//игровой объект в виде панели для отображения подсказки о запуске панели информации
+    public GameObject Menu;//игровой объект в виде панели для отображения и изменения информации объектов симулятора  public GameObject Window_grapg1;//игровой объект в виде панели для отображения графика об информации в симуляторе
+    public GameObject Author1;//игровой объект в виде панели для отображения автора игры
     [Header("Text")]//название типа элемента в программе (вывод текста и значений)
-    public Text rabbits;//блок для вывода информации о количестве кроликах
-    public Text grass2;//блок для вывода информации о количестве травы
     public Text Speedgame;//блок для вывода информации о скорости игры
     public Text growthrateGrass;//блок для вывода информации о скорости роста травы
     public Text Healthrabbit;//блок для вывода информации о количестве здоровья кролика
@@ -29,9 +30,11 @@ public class start : MonoBehaviour
     public Text TextTime;//блок для вывода информации о количестве времени действия симуляции
     [Header("Button")]//название типа элемента в программе (кнопки)
     public Button exit;//кнопка: выход из симулятора
-    public Button stop;//кнопка: остановка симулятора
-    public Button start1;//кнопка: возобновление симуляции
-    public Button continue1;//кнопка: возобновление симуляции
+    public Button settings;//кнопка: показ настроек игры
+    public Button start1;//кнопка: запуск симуляции
+    public Button close;//кнопка: закрытие панели настройки
+    public Button close2;//кнопка: закрытие панели автора
+    public Button author;//кнопка: открытие панели автора
     public Button plusspeedgame;//кнопка: увеличение скорости симуляции
     public Button minusspeedgame;//кнопка: уменьшение скорости симуляции
     public Button plusgrowthrate;//кнопка: увеличение скорости роста травы
@@ -44,15 +47,15 @@ public class start : MonoBehaviour
     public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
     public Button plusfoxcounter;//кнопка увеличивающая количество созданных лис
     public Button minusfoxcounter;//кнопка уменьшающая количество созданных лис
-    [Header("Keys")]//название типа элемента в программе (клавишы)
-    public KeyCode Escape = KeyCode.Escape;//обработка нажатия клавишы Esc
 
     void Start()
     {
         exit.onClick.AddListener(Exit);
-        stop.onClick.AddListener(Stop);
+        settings.onClick.AddListener(Settings);
         start1.onClick.AddListener(Start1);
-        continue1.onClick.AddListener(Continue);
+        close.onClick.AddListener(Close);
+        close2.onClick.AddListener(Close2);
+        author.onClick.AddListener(Author);
         plusspeedgame.onClick.AddListener(Plusspeedgame);
         minusspeedgame.onClick.AddListener(Minusspeedgame);
         plusgrowthrate.onClick.AddListener(Plusgrowthrate);
@@ -69,17 +72,16 @@ public class start : MonoBehaviour
 
     public void Plusfoxhealth()
     {
-        AI_fox.health++;
+        AI_fox.StartHealth++;
     }
 
     public void Minusfoxhealth()
     {
-        AI_fox.health--;
+        AI_fox.StartHealth--;
     }
 
     public void Plusfoxcounter()
     {
-        Debug.Log("Лиса Рождается++");
         Main.FoxSum++;
         Instantiate(AI_fox.Fox, transform.position, transform.rotation);
     }
@@ -91,12 +93,12 @@ public class start : MonoBehaviour
 
     public void Plusrabbithealth()
     {
-        AI_rabbit.health++;
+        AI_rabbit.StartHealth++;
     }
 
     public void Minusrabbithealth()
     {
-        AI_rabbit.health--;
+        AI_rabbit.StartHealth--;
     }
 
     public void Pluseatgrass()
@@ -114,14 +116,28 @@ public class start : MonoBehaviour
         Application.Quit();
     }
 
-    public void Stop()
+    public void Settings()
     {
-        Time.timeScale = 0f;
+        GetComponent<AudioSource>().PlayOneShot(OpenMenu);
+        Menu.SetActive(true);
     }
 
-    public void Continue()
+    public void Author()
     {
-        Time.timeScale = 1f;
+        GetComponent<AudioSource>().PlayOneShot(OpenAuthor);
+        Author1.SetActive(true);
+    }
+
+    public void Close()
+    {
+        GetComponent<AudioSource>().PlayOneShot(CloseMenu);
+        Menu.SetActive(false);
+    }
+
+    public void Close2()
+    {
+        GetComponent<AudioSource>().PlayOneShot(CloseAuthor);
+        Author1.SetActive(false);
     }
 
     public void Start1()
@@ -151,12 +167,6 @@ public class start : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(Escape))
-        {
-            GetComponent<AudioSource>().PlayOneShot(OpenMenu);
-            information.SetActive(true);
-            help.SetActive(false);
-        }
         GameSeconds = GameSeconds + Time.deltaTime;
         StringSecond = GameSeconds.ToString();
         StringMinutes = GameMinutes.ToString();
@@ -168,13 +178,11 @@ public class start : MonoBehaviour
             GameSeconds = 0.0f;
         }
 
-        rabbits.text = "Популяция кроликов = " + Main.Sumrabbit;
-        grass2.text = "Количество травы = " + Main.grassSum1;
         Speedgame.text = "Скорость симуляции = " + Main.speedGame;
         growthrateGrass.text = "Скорость роста травы = " + Main.GrassSpeed;
-        Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.health;
+        Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.StartHealth;
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
-        Healthfox.text = "Здоровье лисы = " + AI_fox.health;
+        Healthfox.text = "Здоровье лисы = " + AI_fox.StartHealth;
         Healthcounter.text = "Количество лис = " + Main.FoxSum;
         TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
     }

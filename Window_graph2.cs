@@ -3,6 +3,7 @@ using CodeMonkey.Utils;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Window_graph2 : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class Window_graph2 : MonoBehaviour
 
     void Update()
     {
-        if (valueFoxList.Count == 20) valueFoxList.RemoveAt(1);
+        if (valueFoxList.Count == 20) valueFoxList.RemoveAt(0);
         GameSeconds = GameSeconds + Time.deltaTime;
         CurrentTime += Time.deltaTime;
         if (GameSeconds >= 0.25f && GameSeconds <= 0.68f)
@@ -61,7 +62,8 @@ public class Window_graph2 : MonoBehaviour
         float graphHeight = graphContainer.sizeDelta.y; //Определяем высоту контейнера для графика
         float graphWidth = graphContainer.sizeDelta.x; //Определяем ширину контейнера для графика
         float yMaximum = 10;//valueList.Max; //100f; Вычисляем максимальное значение по Y для всех значений списка valueList
-        if (Main.FoxSum > 10) yMaximum = Main.FoxSum;
+        //if (Main.FoxSum > 10) yMaximum = Main.FoxSum;
+        if (Main.FoxSum > 10) yMaximum = valueFoxList.Max();
         float yMin = 1;//valueList.Min; //Вычисляем минимальное значение по Y для всех значений списка valueList
         float xMaximum = valueFoxList.Count - 1; //Вычисляем максимальное значение по Х для всех значений списка valueList. Оно равно количеству записей в списке.
         float xSize = graphWidth / xMaximum; //50f;//Вычисляем нормировочный коэффициент масштабирования по X
@@ -96,8 +98,8 @@ public class Window_graph2 : MonoBehaviour
         rectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
     }
 
-    void Start()
-    {
+    //void Start()
+    /*{
 
-    }
+    }*/
 }

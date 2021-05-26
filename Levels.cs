@@ -12,15 +12,13 @@ public class Level : MonoBehaviour
     //одновременно присутствуют на игровом поле. Например: травы 20 кустов, кроликов 10 штук и лис 3 штуки. Достижения всех этих
     //показателей одновременно приводит к переходу на следующий уровень игры.
 
-    // Start is called before the first frame update
-    void Start()
+    /*//void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    //void Update()
     {
         
-    }
+    }*/
 }

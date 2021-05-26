@@ -11,7 +11,7 @@ public class AI_fox: MonoBehaviour
     private float y = 0;//коррдинаты кролика по оси y
     public float Health = 60;//колличество здоровья у лисы
     public static float eatRabbit = 0;
-    public static float health = 0;//колличество здоровья у лисы, которое передается в файл Main для дальнейшего вывода на экран
+    public static float StartHealth = 60;//колличество здоровья у лисы, которое передается в файл Main для дальнейшего вывода на экран
     public GameObject target = null;//игровой объект для поедания лисой
     public GameObject fox;//игровой объект лиса
     public static GameObject Fox;//игровой объект лиса
@@ -30,6 +30,7 @@ public class AI_fox: MonoBehaviour
 
     void Start()
     {
+        Health = StartHealth;
         Main.FoxSum++;
         //int counterRabbit = 2;
         maxChild = 3;
@@ -42,7 +43,6 @@ public class AI_fox: MonoBehaviour
         //GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
         //target = rabbits[Random.Range(0, rabbits.Length)];
         y = 0f;
-        Health = 60;
         InvokeRepeating("brain", 0, 1f);
         InvokeRepeating("life", 1f, 1f);
     }
@@ -71,16 +71,12 @@ public class AI_fox: MonoBehaviour
 
     void Update()
     {
-        Fox = fox;
-        Age = age;
-        MaxChild = maxChild;
         transform.Rotate(x, y, z);
         if (transform.position.y > 0.01)
         {
             //Main.FoxSum--;
             Destroy(gameObject);
         }
-        health = Health;
     }
 
     private void brain()
@@ -182,7 +178,7 @@ public class AI_fox: MonoBehaviour
             { //родим лису если съедено нужное количество кроликов
                 counterRabbit = 2;
                 //Main.FoxSum++;
-                Health = 60;
+                Health = StartHealth;
                 Instantiate(fox, transform.position, transform.rotation);
                 maxChild--;
                 if (maxChild == 0)
