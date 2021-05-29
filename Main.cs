@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Main : MonoBehaviour
@@ -36,8 +37,8 @@ public class Main : MonoBehaviour
     public float GameMinutes;//количество минут
     public static bool start = false;//Проверка на старт цели симуляции
     public bool escape = false;
-    public int rab = 0;
-    public int fos = 0;
+    public bool rab = false;
+    public bool fos = false;
     string StringSecond;//количество секунд в виде строки
     string StringMinutes;//количество минут в виде строки
     public AudioClip OpenMenu;
@@ -70,6 +71,7 @@ public class Main : MonoBehaviour
     public Button close2;//кнопка: закрытие панели изображения графика
     public Button CloseHelp;//кнопка: закрытие панели информации и ее изменений
     public Button OpenHelp;//кнопка: закрытие панели изображения графика
+    public Button backMenu;//кнопка: открытие главного меню
     public Button plusspeedgame;//кнопка: увеличение скорости симуляции
     public Button minusspeedgame;//кнопка: уменьшение скорости симуляции
     public Button plusgrowthrate;//кнопка: увеличение скорости роста травы
@@ -102,6 +104,7 @@ public class Main : MonoBehaviour
         close2.onClick.AddListener(Closegraph);
         CloseHelp.onClick.AddListener(Closehelp);
         OpenHelp.onClick.AddListener(Openhelp);
+        backMenu.onClick.AddListener(BackMenu);
         plusspeedgame.onClick.AddListener(Plusspeedgame);
         minusspeedgame.onClick.AddListener(Minusspeedgame);
         plusgrowthrate.onClick.AddListener(Plusgrowthrate);
@@ -130,7 +133,7 @@ public class Main : MonoBehaviour
         InvokeRepeating("grassRun", grassSpeed, grassSpeed);
         Sumrabbit = 0;
         FoxSum = 0;
-        fos = 0;
+        fos = false;
     }
 
     /*IEnumerator gameOver3()
@@ -154,6 +157,11 @@ public class Main : MonoBehaviour
     public void Continue()
     {
         Time.timeScale = 1f;
+    }
+
+    public void BackMenu()
+    {
+        if (SceneManager.GetActiveScene().name == "SampleScene") SceneManager.LoadScene("Start");
     }
 
     /*public void Continue2()
@@ -201,14 +209,14 @@ public class Main : MonoBehaviour
 
     public void Rabbit()
     {
-        rab = 1;
-        fos = 0;
+        rab = true;
+        fos = false;
     }
 
     public void Fox()
     {
-        fos = 1;
-        rab = 0;
+        fos = true;
+        rab = false;
     }
 
     public void Plusfoxhealth()
@@ -322,7 +330,7 @@ public class Main : MonoBehaviour
 
     void Update()
     {
-        if (rab == 1)
+        if (rab == true)
         {
             if (Input.GetKey(KeyCode.Mouse0))
             {
@@ -332,15 +340,17 @@ public class Main : MonoBehaviour
 
                     if (hit.transform.CompareTag("ground"))
                     {
+                        prefab.tag = "rabbit";
                         GameObject obj = Instantiate(prefab, new Vector3(hit.point.x, 0, hit.point.z), Quaternion.identity) as GameObject;
+                        prefab.tag = "Spawn";
                     }
                 }
             }
             Spawn.text = "Субъект спавна = " + prefab;
-            fos = 0;
+            fos = false;
         }
 
-        if (fos == 1)
+        if (fos == true)
         {
             if (Input.GetKey(KeyCode.Mouse0))
             {
@@ -350,12 +360,14 @@ public class Main : MonoBehaviour
 
                     if (hit.transform.CompareTag("ground"))
                     {
+                        prefab2.tag = "fox";
                         GameObject obj = Instantiate(prefab2, new Vector3(hit.point.x, 0, hit.point.z), Quaternion.identity) as GameObject;
+                        prefab2.tag = "Spawn";
                     }
                 }
             }
             Spawn.text = "Субъект спавна = " + prefab2;
-            rab = 0;
+            rab = false;
         }
 
         if (Input.GetKeyDown(M))
@@ -400,6 +412,12 @@ public class Main : MonoBehaviour
             GetComponent<AudioSource>().PlayOneShot(gameOver2);
             GetComponent<AudioSource>().PlayOneShot(gameOver);
         }
+        if (FoxSum == 0)
+        {
+            GameOver.SetActive(true);
+            GetComponent<AudioSource>().PlayOneShot(gameOver2);
+            GetComponent<AudioSource>().PlayOneShot(gameOver);
+        }
 
         speedGame = Time.timeScale;// для вывода информации в unity в inspector
         GrassSpeed = grassSpeed;
@@ -421,9 +439,9 @@ public class Main : MonoBehaviour
         grass2.text = "Количество травы = " + grassSum1;
         Speedgame.text = "Скорость симуляции = " + speedGame;
         growthrateGrass.text = "Скорость роста травы = " + grassSpeed;
-        Healthrabbit.text = "Здоровье созданного кролика = " + AI_rabbit.StartHealth;
+        Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.StartHealth;
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
-        Healthfox.text = "Здоровье созданной лисы = " + AI_fox.StartHealth;
+        Healthfox.text = "Здоровье лисы = " + AI_fox.StartHealth;
         Healthcounter.text = "Количество лис = " + FoxSum;
         TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
         eatGrass2.text = "Съеденная трава = " + AI_rabbit.eatGrass2;

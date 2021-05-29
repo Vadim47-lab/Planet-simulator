@@ -81,7 +81,7 @@ public class AI_fox: MonoBehaviour
 
     private void brain()
     {
-        age--;
+        if (tag != "Spawn") age--;
         if (age == 0)
         {
             //Main.FoxSum--;
@@ -93,30 +93,30 @@ public class AI_fox: MonoBehaviour
         {
             case 0:
                 y = 0;
-                if (tag == "fox") GetComponent<Animator>().SetBool("Run", false);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", false);
                 break;
             case 1:
             case 2:
             case 3:
             case 4:
-                if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", true);
                 y = 0;
                 break;
             case 5:
             case 6:
             case 7:
-                if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", true);
                 y = 2;
                 break;
             case 8:
             case 9:
             case 10:
-                if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", true);
                 y = -2;
                 break;
             case 11:
                 y = 0;
-                if (tag == "fox") GetComponent<Animator>().SetBool("Run", true);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", true);
                 if (target == null)
                 {
                     GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
@@ -135,8 +135,8 @@ public class AI_fox: MonoBehaviour
 
     private void life()
     {
-        if (tag == "fox") Health--;
-        if (Health <= 0 && tag == "fox")
+        if (tag != "Spawn") Health--;
+        if (Health <= 0)
         {
             //GetComponent<Animator>().SetBool("Death", true);
             Destroy(gameObject);

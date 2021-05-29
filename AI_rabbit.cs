@@ -47,7 +47,7 @@ public class AI_rabbit : MonoBehaviour
         //minuseatgrass.onClick.AddListener(Minuseatgrass);
         xGrass = Random.Range(0, 99);
         yGrass = Random.Range(0, 99);
-        if (tag == "rabbit") Health = StartHealth;
+        if (tag != "Spawn") Health = StartHealth;
         InvokeRepeating("brain", 0, 1f);
         InvokeRepeating("life", 1f, 1f);
     }
@@ -83,7 +83,7 @@ public class AI_rabbit : MonoBehaviour
             if (Main.start == true) eatGrass2++;
             if (counter >= counterGrass)
             {
-                if (tag == "rabbit") Health = StartHealth;
+                if (tag != "Spawn") Health = StartHealth;
                 create();
                 counter = 0;
                 //counter2++;
@@ -133,7 +133,7 @@ public class AI_rabbit : MonoBehaviour
 
     private void brain()
     {
-        age--;
+        if (tag != "Spawn") age--;
         if (age == 0)
         {
             //counter2--;
@@ -147,25 +147,25 @@ public class AI_rabbit : MonoBehaviour
         {
            case 0:
                y = 0;
-               if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", false);
+               if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", false);
                break;
            case 1:
            case 2:
            case 3:
            case 4:
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", true);
                y = 0;
                break;
            case 5:
            case 6:
            case 7:
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", true);
                y = 2;
                 break;
            case 8:
            case 9:
            case 10:
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", true);
                y = -2;
                 break;
            case 11:
@@ -181,11 +181,11 @@ public class AI_rabbit : MonoBehaviour
                 }
                 if (grass == null)
                 {
-                    if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", false);
+                    if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", false);
                     break;
                 }
                 transform.LookAt(grass.transform);
-                if (tag == "rabbit") GetComponent<Animator>().SetBool("Run", true);
+                if (tag != "Spawn") GetComponent<Animator>().SetBool("Run", true);
                 break;
         }
     }
@@ -210,11 +210,11 @@ public class AI_rabbit : MonoBehaviour
 
     private void life()
     {
-         if (tag == "rabbit")
+         if (tag != "Spawn")
          {
              Health--;
         }
-        if (Health <= 0 && tag == "rabbit")
+        if (Health <= 0)
         { 
             //GetComponent<Animator>().SetBool("Death", true);
             Destroy(gameObject);
