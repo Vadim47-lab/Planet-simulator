@@ -33,8 +33,8 @@ public class start : MonoBehaviour
     public Button settings;//кнопка: показ настроек игры
     public Button start1;//кнопка: запуск симуляции
     public Button close;//кнопка: закрытие панели настройки
-    public Button close2;//кнопка: закрытие панели автора
-    public Button author;//кнопка: открытие панели автора
+    public Button close2;//кнопка: закрытие панели автор
+    public Button author;//кнопка: открытие панели автор
     public Button plusspeedgame;//кнопка: увеличение скорости симуляции
     public Button minusspeedgame;//кнопка: уменьшение скорости симуляции
     public Button plusgrowthrate;//кнопка: увеличение скорости роста травы
@@ -157,12 +157,12 @@ public class start : MonoBehaviour
 
     public void Plusgrowthrate()
     {
-        Main.GrassSpeed++;
+        Main.grassSpeed++;
     }
 
     public void Minusgrowthrate()
     {
-        Main.GrassSpeed--;
+        Main.grassSpeed--;
     }
 
     void Update()
@@ -179,7 +179,7 @@ public class start : MonoBehaviour
         }
 
         Speedgame.text = "Скорость симуляции = " + Main.speedGame;
-        growthrateGrass.text = "Скорость роста травы = " + Main.GrassSpeed;
+        growthrateGrass.text = "Скорость роста травы = " + Main.grassSpeed;
         Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.StartHealth;
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
         Healthfox.text = "Здоровье лисы = " + AI_fox.StartHealth;
