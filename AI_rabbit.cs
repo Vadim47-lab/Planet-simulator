@@ -77,6 +77,34 @@ public class AI_rabbit : MonoBehaviour
         {
             Main.grass[xRabbit, yRabbit] = null;
             Destroy(grass);
+            grass = Main.grass[xRabbit + 1, yRabbit];
+            if (grass != null)
+            {
+                Destroy(grass);
+                Main.grassSum1--;
+                Main.grass[xRabbit + 1, yRabbit] = null;
+            }
+            grass = Main.grass[xRabbit - 1, yRabbit];
+            if (grass != null)
+            {
+                Destroy(grass);
+                Main.grassSum1--;
+                Main.grass[xRabbit - 1, yRabbit] = null;
+            }
+            grass = Main.grass[xRabbit, yRabbit + 1];
+            if (grass != null)
+            {
+                Destroy(grass);
+                Main.grassSum1--;
+                Main.grass[xRabbit, yRabbit + 1] = null;
+            }
+            grass = Main.grass[xRabbit, yRabbit - 1];
+            if (grass != null)
+            {
+                Destroy(grass);
+                Main.grassSum1--;
+                Main.grass[xRabbit, yRabbit - 1] = null;
+            }
             Main.grassSum1--;
             //sumGrass--;
             counter++;
@@ -236,7 +264,7 @@ public class AI_rabbit : MonoBehaviour
         {
             for (j = 0; j < 100; j++)
             {
-                if (Main.grass[i, j] != null) count++;
+                if (Main.grass[i, j] != null) count++;//счетчик травы
             }
         }
         int random = Random.Range(1, count);
@@ -259,5 +287,52 @@ public class AI_rabbit : MonoBehaviour
            }
         }
         return null;
+    }
+
+    IEnumerator GetClosestTarget()
+    {
+        float tmpDist = float.MaxValue;
+        GameObject currentTarget = null;
+        for (int i = 0; i < targets.Length; i++)
+        {
+            if (agent.SetDestination(targets[i].transform.position))
+            {
+                //ждем пока вычислится путь до цели
+                while (agent.pathPending)
+                {
+                    yield return null;
+                }
+                Debug.Log(agent.pathStatus.ToString());
+                // проверяем, можно ли дойти до цели
+                if (agent.pathStatus != NavMeshPathStatus.PathInvalid)
+                {
+                    float pathDistance = 0;
+                    //вычисляем длину пути
+                    pathDistance += Vector3.Distance(transform.position, agent.path.corners[0]);
+                    for (int j = 1; j < agent.path.corners.Length; j++)
+                    {
+                        pathDistance += Vector3.Distance(agent.path.corners[j - 1], agent.path.corners[j]);
+                    }
+
+                    if (tmpDist > pathDistance)
+                    {
+                        tmpDist = pathDistance;
+                        currentTarget = targets[i];
+                        agent.ResetPath();
+                    }
+                }
+                else
+                {
+                    Debug.Log("невозможно дойти до " + targets[i].name);
+                }
+
+            }
+
+        }
+        if (currentTarget != null)
+        {
+            agent.SetDestination(currentTarget.transform.position);
+            //... дальше ваша логика движения к цели
+        }
     }
 }
