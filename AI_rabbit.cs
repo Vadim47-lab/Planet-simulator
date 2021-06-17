@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -35,6 +37,8 @@ public class AI_rabbit : MonoBehaviour
     public int age = 220;//биологический возраст максимальный
     public static int Age = 0;
     public BoxCollider hitBox;
+    private NavMeshAgent agent;
+    public GameObject[] targets;
 
     void Start()
     {
@@ -279,8 +283,9 @@ public class AI_rabbit : MonoBehaviour
                     count++;
                     if (count == random)
                     {
-                        xGrass = i;
-                        yGrass = j;
+                        //xGrass = i;//необходимо найти координаты ближайшей травы. Должны передать координаты кролика
+                        //yGrass = j;
+                        GetClosestTarget();
                         return grass;
                     }
                 }
@@ -293,6 +298,7 @@ public class AI_rabbit : MonoBehaviour
     {
         float tmpDist = float.MaxValue;
         GameObject currentTarget = null;
+        GetComponent<NavMeshAgent>();
         for (int i = 0; i < targets.Length; i++)
         {
             if (agent.SetDestination(targets[i].transform.position))
