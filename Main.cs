@@ -18,7 +18,8 @@ public class Main : MonoBehaviour
     public GameObject Targetgame;//Цель симуляциии
     public GameObject winRabbit;//победа кроликов
     public GameObject winFox;//победа лис
-    public GameObject GameOver;
+    public GameObject GameOver;//появляется текст GameOver, когда на сцене нет кроликов
+    public GameObject Waring;//Предупреждение о выходе за диапазон регулирования скорости роста травы
     public GameObject prefab;//1 префаб для спавна
     public GameObject prefab2;//2 префаб для спавна
     public GameObject prefab3;//3 префаб для спавна
@@ -35,7 +36,7 @@ public class Main : MonoBehaviour
     public float CurrentTime;//считает колличество секунд
     public float GameSeconds;//количество секунд
     public float GameMinutes;//количество минут
-    public int screenGrassSpeed = 0;
+    public int screenGrassSpeed = 9;
     public static bool start = false;//Проверка на старт цели симуляции
     public bool escape = false;
     public bool rab = false;
@@ -258,12 +259,16 @@ public class Main : MonoBehaviour
 
     public void Plusgrowthrate()
     {
-        screenGrassSpeed++;
+        if (screenGrassSpeed < 10) screenGrassSpeed++;
+        if (screenGrassSpeed > 9) Waring.SetActive(true);
+        if (screenGrassSpeed < 9) Waring.SetActive(false);
     }
 
     public void Minusgrowthrate()
     {
-        screenGrassSpeed--;
+        if (screenGrassSpeed > 0) screenGrassSpeed--;
+        if (screenGrassSpeed < 1) Waring.SetActive(true);
+        if (screenGrassSpeed > 1) Waring.SetActive(false);
     }
 
     private void grassSeeder(int x, int y)
@@ -447,7 +452,7 @@ public class Main : MonoBehaviour
         rabbits.text = "Популяция кроликов = " + Sumrabbit;
         grass2.text = "Количество травы = " + grassSum1;
         Speedgame.text = "Скорость симуляции = " + speedGame;
-        growthrateGrass.text = "Замедление скорости роста травы = " + grassSpeed;
+        growthrateGrass.text = "Скорость роста травы = " + screenGrassSpeed;
         Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.StartHealth;
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
         Healthfox.text = "Здоровье лисы = " + AI_fox.StartHealth;
