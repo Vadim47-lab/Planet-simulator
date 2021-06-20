@@ -25,7 +25,7 @@ public class Main : MonoBehaviour
     private Ray ray;
     private RaycastHit hit;
     public static int grassSum1 = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
-    public static int FoxSum = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
+    public static int FoxSum = -1;//количество травы, значение которого берется из скрипта кролика и выводится на экран
     public static int eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
     private int xGrass, yGrass;//коррдинаты травы
     public static float speedGame;//скорость игры, которое выводится на экран
@@ -35,6 +35,7 @@ public class Main : MonoBehaviour
     public float CurrentTime;//считает колличество секунд
     public float GameSeconds;//количество секунд
     public float GameMinutes;//количество минут
+    public int screenGrassSpeed = 0;
     public static bool start = false;//Проверка на старт цели симуляции
     public bool escape = false;
     public bool rab = false;
@@ -46,9 +47,9 @@ public class Main : MonoBehaviour
     public AudioClip OpenGraph;
     public AudioClip CloseMenu;
     public AudioClip CloseGraph;
-    public AudioClip Backfon;
     public AudioClip gameOver;
     public AudioClip gameOver2;
+    public AudioClip BackFon;
     [Header("Text")]//название типа элемента в программе (вывод текста и значений)
     public Text rabbits;//блок для вывода информации о количестве кроликах
     public Text grass2;//блок для вывода информации о количестве травы
@@ -93,6 +94,7 @@ public class Main : MonoBehaviour
     public KeyCode Tab = KeyCode.Tab;//обработка нажатия клавишы Tab
     public KeyCode F = KeyCode.F;//обработка нажатия клавишы Enter
     public KeyCode M = KeyCode.M;//обработка нажатия клавишы M
+    public KeyCode N = KeyCode.N;//обработка нажатия клавишы N
 
     void Start()
     {
@@ -120,7 +122,7 @@ public class Main : MonoBehaviour
         pluseatgrass.onClick.AddListener(Pluseatgrass);
         minuseatgrass.onClick.AddListener(Minuseatgrass);
         Time.timeScale = 1;
-        grassSeeder(50, 50);
+        grassSeeder(50, 50);//cделано чтобы в начале было больше травы
         grassSeeder(55, 50);
         grassSeeder(51, 53);
         grassSeeder(40, 40);
@@ -134,7 +136,7 @@ public class Main : MonoBehaviour
         grassSeeder(41, 41);
         //InvokeRepeating("grassRun", grassSpeed, grassSpeed);
         Sumrabbit = 0;
-        FoxSum = 0;
+        FoxSum = -1;
         fos = false;
     }
 
@@ -256,12 +258,12 @@ public class Main : MonoBehaviour
 
     public void Plusgrowthrate()
     {
-        grassSpeed++;
+        screenGrassSpeed++;
     }
 
     public void Minusgrowthrate()
     {
-        grassSpeed--;
+        screenGrassSpeed--;
     }
 
     private void grassSeeder(int x, int y)
@@ -313,6 +315,7 @@ public class Main : MonoBehaviour
 
     void Update()
     {
+        grassSpeed = 10 - screenGrassSpeed;
         time += Time.deltaTime;
         if (time % grassSpeed >= grassSpeed - Time.deltaTime)
         {
@@ -383,10 +386,6 @@ public class Main : MonoBehaviour
             fos = false;
         }
 
-        if (Input.GetKeyDown(M))
-        {
-            GetComponent<AudioSource>().PlayOneShot(Backfon);
-        }
         if (Input.GetKeyDown(Escape))
         {
             GetComponent<AudioSource>().PlayOneShot(OpenMenu);
@@ -397,6 +396,10 @@ public class Main : MonoBehaviour
         {
             GetComponent<AudioSource>().PlayOneShot(OpenGraph);
             Window_grapg1.SetActive(true);
+        }
+        if (Input.GetKeyDown(M))
+        {
+            GetComponent<AudioSource>().PlayOneShot(BackFon);
         }
         if (escape == true && Input.GetKeyDown(F))
         {
@@ -426,10 +429,14 @@ public class Main : MonoBehaviour
         }
 
         speedGame = Time.timeScale;// для вывода информации в unity в inspector
-        GameSeconds = GameSeconds + Time.deltaTime;
-        StringSecond = GameSeconds.ToString();
-        StringMinutes = GameMinutes.ToString();
-        CurrentTime += Time.deltaTime;
+        GameSeconds = GameSeconds + Time.deltaTime + .0f;
+        StringSecond = GameSeconds.ToString("###");
+        if (GameMinutes != 0) StringMinutes = GameMinutes.ToString() + ":";
+        else
+        {
+            StringMinutes = "";
+        }
+        //CurrentTime += Time.deltaTime;
 
         if (GameSeconds >= 60.0f)
         {
@@ -440,12 +447,12 @@ public class Main : MonoBehaviour
         rabbits.text = "Популяция кроликов = " + Sumrabbit;
         grass2.text = "Количество травы = " + grassSum1;
         Speedgame.text = "Скорость симуляции = " + speedGame;
-        growthrateGrass.text = "Скорость роста травы = " + grassSpeed;
+        growthrateGrass.text = "Замедление скорости роста травы = " + grassSpeed;
         Healthrabbit.text = "Здоровье кролика = " + AI_rabbit.StartHealth;
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
         Healthfox.text = "Здоровье лисы = " + AI_fox.StartHealth;
         Healthcounter.text = "Количество лис = " + FoxSum;
-        TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
+        TextTime.text = "Время - " + StringMinutes + StringSecond;
         eatGrass2.text = "Съеденная трава = " + AI_rabbit.eatGrass2;
         eatRabbit.text = "Съеденные кролики = " + AI_fox.eatRabbit;
     }
