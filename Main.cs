@@ -415,7 +415,7 @@ public class Main : MonoBehaviour
             winFox.SetActive(true);
         }
 
-        if (Sumrabbit == 0)
+        if (Sumrabbit == 0)//исправить ошибку
         {
             GameOver.SetActive(true);
             GetComponent<AudioSource>().PlayOneShot(gameOver2);

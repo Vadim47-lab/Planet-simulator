@@ -49,8 +49,9 @@ public class AI_rabbit : MonoBehaviour
         //minusrabbithealth.onClick.AddListener(Minusrabbithealth);
         //pluseatgrass.onClick.AddListener(Pluseatgrass);
         //minuseatgrass.onClick.AddListener(Minuseatgrass);
-        xGrass = Random.Range(0, 99);
-        yGrass = Random.Range(0, 99);
+        //xGrass = Random.Range(0, 99);
+        //yGrass = Random.Range(0, 99);
+        findGrass();
         if (tag != "Spawn") Health = StartHealth;
         InvokeRepeating("brain", 0, 1f);
         InvokeRepeating("life", 1f, 1f);
@@ -81,29 +82,29 @@ public class AI_rabbit : MonoBehaviour
         {
             Main.grass[xRabbit, yRabbit] = null;
             Destroy(grass);
-            grass = Main.grass[xRabbit + 1, yRabbit];
-            if (grass != null)
+            if (xRabbit < 99) grass = Main.grass[xRabbit + 1, yRabbit];
+            if (grass != null && xRabbit < 99)
             {
                 Destroy(grass);
                 Main.grassSum1--;
                 Main.grass[xRabbit + 1, yRabbit] = null;
             }
-            grass = Main.grass[xRabbit - 1, yRabbit];
-            if (grass != null)
+            if (xRabbit > 1) grass = Main.grass[xRabbit - 1, yRabbit];
+            if (grass != null && xRabbit > 1)
             {
                 Destroy(grass);
                 Main.grassSum1--;
                 Main.grass[xRabbit - 1, yRabbit] = null;
             }
-            grass = Main.grass[xRabbit, yRabbit + 1];
-            if (grass != null)
+            if (yRabbit < 99) grass = Main.grass[xRabbit, yRabbit + 1];
+            if (grass != null && yRabbit < 99)
             {
                 Destroy(grass);
                 Main.grassSum1--;
                 Main.grass[xRabbit, yRabbit + 1] = null;
             }
-            grass = Main.grass[xRabbit, yRabbit - 1];
-            if (grass != null)
+            if (yRabbit > 1) grass = Main.grass[xRabbit, yRabbit - 1];
+            if (grass != null && yRabbit > 1)
             {
                 Destroy(grass);
                 Main.grassSum1--;
@@ -130,7 +131,7 @@ public class AI_rabbit : MonoBehaviour
             }
             
         }
-        Sumrabbit = counter2;//для вывода информации в unity в inspector
+        //Sumrabbit = counter2;//для вывода информации в unity в inspector
         counter2 = Sumrabbit;
         Age = age;
         MaxChild = maxChild;
@@ -203,7 +204,8 @@ public class AI_rabbit : MonoBehaviour
            case 11:
                 y = 0;
                 GameObject grass = null;
-                if (Main.grass[xGrass, yGrass] == null)
+                if (Main.grass[xGrass, yGrass] == null)//1 раз в секунду в тики брейн вызывает. проверяем не исчезла ли трава, если ее
+                                                       //съели, то ищем новую.
                 {
                     grass = findGrass();
                 }
@@ -263,16 +265,19 @@ public class AI_rabbit : MonoBehaviour
     private GameObject findGrass()
     {
         int i, j;
-        int count = 0;
-        for (i = 0; i < 100; i++)
+        float distance;//текущее расстояние от травы до кролика
+        float mindistance = 1e10f;//задаем минимальное значение с бесконечным значением. минимальная дистанция между кроликом и травой
+        GameObject closestGrass = null;
+        //int count = 0;
+        /*for (i = 0; i < 100; i++)
         {
             for (j = 0; j < 100; j++)
             {
                 if (Main.grass[i, j] != null) count++;//счетчик травы
             }
         }
-        int random = Random.Range(1, count);
-        count = 0;
+        int random = Random.Range(1, count);*/
+        //count = 0;
         for (i = 0; i < 100; i++)
         {
            for (j = 0; j < 100; j++)
@@ -280,65 +285,19 @@ public class AI_rabbit : MonoBehaviour
                 GameObject grass = Main.grass[i, j];
                 if (grass != null)
                 {
-                    count++;
-                    if (count == random)
+                    //count++;
+                    //определяем расстояние между текущей травы и кроликом
+                    distance = Vector3.Distance(grass.transform.position, transform.position);
+                    if (distance < mindistance)
                     {
-                        //xGrass = i;//необходимо найти координаты ближайшей травы. Должны передать координаты кролика
-                        //yGrass = j;
-                        GetClosestTarget();
-                        return grass;
+                        closestGrass = grass;
+                        mindistance = distance;
+                        xGrass = i;//необходимо найти координаты ближайшей травы. Должны передать координаты кролика
+                        yGrass = j;
                     }
                 }
            }
         }
-        return null;
-    }
-
-    IEnumerator GetClosestTarget()
-    {
-        float tmpDist = float.MaxValue;
-        GameObject currentTarget = null;
-        GetComponent<NavMeshAgent>();
-        for (int i = 0; i < targets.Length; i++)
-        {
-            if (agent.SetDestination(targets[i].transform.position))
-            {
-                //ждем пока вычислится путь до цели
-                while (agent.pathPending)
-                {
-                    yield return null;
-                }
-                Debug.Log(agent.pathStatus.ToString());
-                // проверяем, можно ли дойти до цели
-                if (agent.pathStatus != NavMeshPathStatus.PathInvalid)
-                {
-                    float pathDistance = 0;
-                    //вычисляем длину пути
-                    pathDistance += Vector3.Distance(transform.position, agent.path.corners[0]);
-                    for (int j = 1; j < agent.path.corners.Length; j++)
-                    {
-                        pathDistance += Vector3.Distance(agent.path.corners[j - 1], agent.path.corners[j]);
-                    }
-
-                    if (tmpDist > pathDistance)
-                    {
-                        tmpDist = pathDistance;
-                        currentTarget = targets[i];
-                        agent.ResetPath();
-                    }
-                }
-                else
-                {
-                    Debug.Log("невозможно дойти до " + targets[i].name);
-                }
-
-            }
-
-        }
-        if (currentTarget != null)
-        {
-            agent.SetDestination(currentTarget.transform.position);
-            //... дальше ваша логика движения к цели
-        }
+        return closestGrass;
     }
 }
