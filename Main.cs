@@ -9,8 +9,12 @@ public class Main : MonoBehaviour
     public static GameObject[,] grass = new GameObject[100, 100];//матрица элементов травы
     public static GameObject[,] grassFantom = new GameObject[100, 100];//фантомная матрица элементов травы
     GameObject plant;//закрытый игровой объект травы
+    public static GameObject[,] rock = new GameObject[100, 100];//матрица элементов камней
+    public static GameObject[,] rockFantom = new GameObject[100, 100];//фантомная матрица элементов камней
+    GameObject pebble;//закрытый игровой объект камня
     int i, j;//элементы для матрицы
     public GameObject Grass;//игровой объект травы
+    public GameObject Rock;//игровой объект травы
     public GameObject information;//игровой объект в виде панели для отображения и изменения информации объектов симулятора
     public GameObject Window_grapg1;//игровой объект в виде панели для отображения графика об информации в симуляторе
     public GameObject help;//игровой объект в виде панели для отображения подсказки о запуске панели информации
@@ -133,6 +137,30 @@ public class Main : MonoBehaviour
         grassSeeder(85, 90);
         grassSeeder(85, 85);
         grassSeeder(80, 85);
+
+        i = 0;//нижняя стена из камней
+        for (j = 0; j < 100; j++)
+        {
+             rockSeeder(i, j);
+        }
+
+        i = 99;//верхняя стена из камней
+        for (j = 0; j < 100; j++)
+        {
+            rockSeeder(i, j);
+        }
+
+        j = 0;//правая стена из камней
+        for (i = 0; i < 100; i++)
+        {
+            rockSeeder(i, j);
+        }
+
+        j = 99;//левая стена из камней
+        for (i = 0; i < 100; i++)
+        {
+            rockSeeder(i, j);
+        }
         //InvokeRepeating("grassRun", grassSpeed, grassSpeed);
         Sumrabbit = 0;
         FoxSum = -1;
@@ -271,6 +299,18 @@ public class Main : MonoBehaviour
         grassSum1++;
     }
 
+    private void rockSeeder(int x, int y)
+    {
+        GameObject pebble = Instantiate(Rock, new Vector3(x * 0.5f + Random.Range(-0.1f, 0.1f), 0, y * 0.5f + Random.Range(-0.1f, 0.1f)), transform.rotation);
+        rock[x, y] = pebble; // - камень
+    }
+
+    private void rockFantomSeeder(int x, int y)
+    {
+        GameObject pebble = Instantiate(Rock, new Vector3(x * 0.5f + Random.Range(-0.1f, 0.1f), 0, y * 0.5f + Random.Range(-0.1f, 0.1f)), transform.rotation);
+        rockFantom[x, y] = pebble; // - камень
+    }
+
     private void grassRun()
     {
         for (i = 0; i < 100; i++)
@@ -300,6 +340,39 @@ public class Main : MonoBehaviour
             for (j = 0; j < 100; j++)
             {
                 grass[i, j] = grassFantom[i, j];
+            }
+        }
+    }
+
+    private void rockRun()
+    {
+        for (i = 0; i < 100; i++)
+        {
+            for (j = 0; j < 100; j++)
+            {
+                rockFantom[i, j] = rock[i, j];
+            }
+        }
+
+        for (i = 0; i < 100; i++)
+        {
+            for (j = 0; j < 100; j++)
+            {
+                if (rock[i, j] != null)
+                {
+                    if (i != 100 - 1) if (rockFantom[i + 1, j] == null) rockFantomSeeder(i + 1, j);
+                    if (i != 0) if (rockFantom[i - 1, j] == null) rockFantomSeeder(i - 1, j);
+                    if (j != 100 - 1) if (rockFantom[i, j + 1] == null) rockFantomSeeder(i, j + 1);
+                    if (j != 0) if (rockFantom[i, j - 1] == null) rockFantomSeeder(i, j - 1);
+                }
+            }
+        }
+
+        for (i = 0; i < 100; i++)//порекомендовали grass.Length
+        {
+            for (j = 0; j < 100; j++)
+            {
+                rock[i, j] = rockFantom[i, j];
             }
         }
     }
