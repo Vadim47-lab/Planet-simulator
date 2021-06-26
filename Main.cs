@@ -161,6 +161,18 @@ public class Main : MonoBehaviour
         {
             rockSeeder(i, j);
         }
+
+        i = 50;//нижняя стена из камней
+        for (j = 0; j < 40; j++)
+        {
+            rockSeeder(i, j);
+        }
+
+        j = 50;//левая стена из камней
+        for (i = 0; i < 50; i++)
+        {
+            rockSeeder(i, j);
+        }
         //InvokeRepeating("grassRun", grassSpeed, grassSpeed);
         Sumrabbit = 0;
         FoxSum = -1;
