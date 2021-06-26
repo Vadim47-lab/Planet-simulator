@@ -38,7 +38,8 @@ public class Main : MonoBehaviour
     public float GameMinutes;//количество минут
     public int screenGrassSpeed = 9;
     public static bool start = false;//Проверка на старт цели симуляции
-    public bool escape = false;
+    public bool escape = false;//обработка нажатия клавиши Esc
+    public bool tab = false;//обработка нажатия клавиши Tab
     public bool rab = false;
     public bool fos = false;
     public bool grac = false;
@@ -85,8 +86,6 @@ public class Main : MonoBehaviour
     public Button minuseatgrass;//кнопка уменьшающая колличество сЪеденной травы
     public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
     public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
-    public Button plusfoxcounter;//кнопка увеличивающая количество созданных лис
-    public Button minusfoxcounter;//кнопка уменьшающая количество созданных лис
     public Button fox;//кнопка увеличивающая количество созданных лис
     public Button rabbit;//кнопка увеличивающая количество созданных кроликов
     public Button gras;//кнопка: рост травы
@@ -116,25 +115,24 @@ public class Main : MonoBehaviour
         minusgrowthrate.onClick.AddListener(Minusgrowthrate);
         plusfoxhealth.onClick.AddListener(Plusfoxhealth);
         minusfoxhealth.onClick.AddListener(Minusfoxhealth);
-        plusfoxcounter.onClick.AddListener(Plusfoxcounter);
-        minusfoxcounter.onClick.AddListener(Minusfoxcounter);
         plusrabbithealth.onClick.AddListener(Plusrabbithealth);
         minusrabbithealth.onClick.AddListener(Minusrabbithealth);
         pluseatgrass.onClick.AddListener(Pluseatgrass);
         minuseatgrass.onClick.AddListener(Minuseatgrass);
         Time.timeScale = 1;
-        grassSeeder(50, 50);//cделано чтобы в начале было больше травы
-        grassSeeder(55, 50);
-        grassSeeder(51, 53);
-        grassSeeder(40, 40);
-        grassSeeder(45, 45);
-        grassSeeder(41, 41);
-        grassSeeder(50, 50);
-        grassSeeder(55, 50);
-        grassSeeder(51, 53);
-        grassSeeder(40, 40);
-        grassSeeder(45, 45);
-        grassSeeder(41, 41);
+        grassSeeder(5, 5);//cделано чтобы в начале было больше травы
+        grassSeeder(5, 1);
+        grassSeeder(5, 3);
+        grassSeeder(4, 4);
+        grassSeeder(5, 4);
+        grassSeeder(1, 4);
+
+        grassSeeder(95, 99);
+        grassSeeder(90, 95);
+        grassSeeder(90, 90);
+        grassSeeder(85, 90);
+        grassSeeder(85, 85);
+        grassSeeder(80, 85);
         //InvokeRepeating("grassRun", grassSpeed, grassSpeed);
         Sumrabbit = 0;
         FoxSum = -1;
@@ -213,18 +211,6 @@ public class Main : MonoBehaviour
     public void Minusfoxhealth()
     {
         AI_fox.StartHealth--;
-    }
-
-    public void Plusfoxcounter()
-    {
-        Debug.Log("Лиса Рождается++");
-        Main.FoxSum++;
-        Instantiate(AI_fox.Fox, transform.position, transform.rotation);
-    }
-
-    public void Minusfoxcounter()
-    {
-        Main.FoxSum--;
     }
 
     public void Plusrabbithealth()
@@ -320,7 +306,7 @@ public class Main : MonoBehaviour
 
     void Update()
     {
-        grassSpeed = 10 - screenGrassSpeed;
+        grassSpeed = (10 - screenGrassSpeed) * 2;
         time += Time.deltaTime;
         if (time % grassSpeed >= grassSpeed - Time.deltaTime)
         {
@@ -390,17 +376,20 @@ public class Main : MonoBehaviour
             rab = false;
             fos = false;
         }
-
+        
         if (Input.GetKeyDown(Escape))
         {
             GetComponent<AudioSource>().PlayOneShot(OpenMenu);
-            escape = true;
-            information.SetActive(true);
+            escape = !escape;//Переводит в противоположный знак (станет true после 1 нажатия)
+            if (escape) information.SetActive(true);
+            else information.SetActive(false);
         }
         if (Input.GetKeyDown(Tab))
         {
             GetComponent<AudioSource>().PlayOneShot(OpenGraph);
-            Window_grapg1.SetActive(true);
+            tab = !tab;//Переводит в противоположный знак (станет true после 1 нажатия)
+            if (tab) Window_grapg1.SetActive(true);
+            else Window_grapg1.SetActive(false);
         }
         if (Input.GetKeyDown(M))
         {

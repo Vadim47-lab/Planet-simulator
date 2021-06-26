@@ -44,7 +44,7 @@ public class AI_rabbit : MonoBehaviour
     {
         Main.Sumrabbit++;
         age = 220;
-        maxChild = 4;
+        maxChild = 5;
         //plusrabbithealth.onClick.AddListener(Plusrabbithealth);
         //minusrabbithealth.onClick.AddListener(Minusrabbithealth);
         //pluseatgrass.onClick.AddListener(Pluseatgrass);
