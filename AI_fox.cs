@@ -9,24 +9,18 @@ public class AI_fox: MonoBehaviour
     private float z = 0;//коррдинаты кролика по оси z
     private float x = 0;//коррдинаты кролика по оси x
     private float y = 0;//коррдинаты кролика по оси y
-    public float Health = 60;//колличество здоровья у лисы
+    public float Health = 50;//колличество здоровья у лисы
     public static float eatRabbit = 0;
     public static float StartHealth = 60;//колличество здоровья у лисы, которое передается в файл Main для дальнейшего вывода на экран
     public GameObject target = null;//игровой объект для поедания лисой
     public GameObject fox;//игровой объект лиса
-    public static GameObject Fox;//игровой объект лиса
+    public static GameObject Fox;//игровой объект лиса для передачи объекта в главное меню
     public int random2;//обход камня
     public int random;//мозг лисы
     public int maxChild = 3;//сколько лис можно родить
-    public static int MaxChild = 0;
-    private int counterRabbit = 2; //сколько нужно съесть кроликов для размножения
-    public int age = 130;//биологический возраст максимальный
-    public static int Age = 0;
+    private int counterRabbit = 1; //сколько нужно съесть кроликов для размножения
+    public int age = 90;//биологический возраст максимальный
     public static float counter4 = 1;//колисчество созданных лис, для вывода на экран в Main
-   // public Button plusfoxhealth;//кнопка увеличивающая жизнь лисе
-   // public Button minusfoxhealth;//кнопка уменьшающая жизнь лисе
-   // public Button plusfoxcounter;//кнопка увеличивающая количество созданных лис
-   // public Button minusfoxcounter;//кнопка уменьшающая количество созданных лис
 
     void Start()
     {
@@ -34,11 +28,7 @@ public class AI_fox: MonoBehaviour
         Main.FoxSum++;
         //int counterRabbit = 2;
         maxChild = 3;
-        age = 130;
-      //  plusfoxhealth.onClick.AddListener(Plusfoxhealth);
-      //  minusfoxhealth.onClick.AddListener(Minusfoxhealth);
-      //  plusfoxcounter.onClick.AddListener(Plusfoxcounter);
-       // minusfoxcounter.onClick.AddListener(Minusfoxcounter);
+        age = 110;
         target = null;
         //GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
         //target = rabbits[Random.Range(0, rabbits.Length)];
@@ -167,7 +157,7 @@ public class AI_fox: MonoBehaviour
 
         if (other.tag == "rabbit" && Health < 20)
         {
-            Health += 20;
+            Health += 10;
             target = null;
             Destroy(other.gameObject);
             if (Main.start == true) eatRabbit++;

@@ -27,35 +27,38 @@ public class Main : MonoBehaviour
     public GameObject prefab;//1 префаб для спавна
     public GameObject prefab2;//2 префаб для спавна
     public GameObject prefab3;//3 префаб для спавна
-    private Ray ray;
-    private RaycastHit hit;
+    private Ray ray;//технология, которая преобразует ограниченный набор данных (максимально упрощенная карта, либо же план этажа)
+                   //в 3D проекцию путем «бросания лучей» из точки обзора по всей области видимости
+    private RaycastHit hit;//некоторый луч, испускаемый из некоторого объекта в некотором направлении некоторой длины
+                           //(либо бесконечный) для определения коллизий(столкновений) с объектами.
     public static int grassSum1 = 0;//количество травы, значение которого берется из скрипта кролика и выводится на экран
-    public static int FoxSum = -1;//количество травы, значение которого берется из скрипта кролика и выводится на экран
+    public static int FoxSum = -1;//количество лис;
     public static int eatGrass = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
     private int xGrass, yGrass;//коррдинаты травы
     public static float speedGame;//скорость игры, которое выводится на экран
-    public static float grassSpeed = 10f;//скорость роста травы, которое выводится на экран
-    public static int Sumrabbit = 0; //Количество кроликов
-    public float time = 1;
+    public static float grassSpeed = 10f;//расчет скорости роста травы
+    public static int Sumrabbit = -1; //Количество кроликов
+    public float time = 1;//количество игрового времени и скорости игры
     public float CurrentTime;//считает колличество секунд
     public float GameSeconds;//количество секунд
     public float GameMinutes;//количество минут
-    public int screenGrassSpeed = 9;
+    public int screenGrassSpeed = 5;//скорость роста травы, которое выводится на экран
+    public bool music = false;//Обработка нажатия клавишы M
     public static bool start = false;//Проверка на старт цели симуляции
     public bool escape = false;//обработка нажатия клавиши Esc
     public bool tab = false;//обработка нажатия клавиши Tab
-    public bool rab = false;
-    public bool fos = false;
-    public bool grac = false;
+    public bool rab = false;//Проверка на выбор спавна кролика
+    public bool fos = false;//Проверка на выбор спавна лисы
+    public bool grac = false;//Проверка на выбор спавна травы
     string StringSecond;//количество секунд в виде строки
     string StringMinutes;//количество минут в виде строки
-    public AudioClip OpenMenu;
-    public AudioClip OpenGraph;
-    public AudioClip CloseMenu;
-    public AudioClip CloseGraph;
-    public AudioClip gameOver;
-    public AudioClip gameOver2;
-    public AudioClip BackFon;
+    public AudioClip OpenMenu;//включение звука открытия панели управления
+    public AudioClip CloseMenu;//включение звука закрытия панели управления
+    public AudioClip OpenGraph;//включение звука открытия графика
+    public AudioClip CloseGraph;//включение звука закрытия графика
+    public AudioClip gameOver;//включение голоса gameOver
+    public AudioClip gameOver2;//включение звука gameOver
+    public AudioClip BackFon;//включение музыки
     [Header("Text")]//название типа элемента в программе (вывод текста и значений)
     public Text rabbits;//блок для вывода информации о количестве кроликах
     public Text grass2;//блок для вывода информации о количестве травы
@@ -73,8 +76,6 @@ public class Main : MonoBehaviour
     public Button exit;//кнопка: выход из симулятора
     public Button stop;//кнопка: остановка симулятора
     public Button continue1;//кнопка: возобновление симуляции
-    //public Button continue2;//кнопка: возобновление симуляции
-    //public Button continue3;//кнопка: возобновление симуляции
     public Button close;//кнопка: закрытие панели информации и ее изменений
     public Button close2;//кнопка: закрытие панели изображения графика
     public Button CloseHelp;//кнопка: закрытие панели информации и ее изменений
@@ -124,12 +125,12 @@ public class Main : MonoBehaviour
         pluseatgrass.onClick.AddListener(Pluseatgrass);
         minuseatgrass.onClick.AddListener(Minuseatgrass);
         Time.timeScale = 1;
-        grassSeeder(5, 5);//cделано чтобы в начале было больше травы
-        grassSeeder(5, 1);
-        grassSeeder(5, 3);
-        grassSeeder(4, 4);
-        grassSeeder(5, 4);
-        grassSeeder(1, 4);
+        grassSeeder(50, 50);//cделано чтобы в начале было больше травы
+        grassSeeder(55, 50);
+        grassSeeder(55, 55);
+        grassSeeder(60, 55);
+        grassSeeder(45, 50);
+        grassSeeder(45, 45);
 
         grassSeeder(95, 99);
         grassSeeder(90, 95);
@@ -174,7 +175,7 @@ public class Main : MonoBehaviour
             rockSeeder(i, j);
         }
         //InvokeRepeating("grassRun", grassSpeed, grassSpeed);
-        Sumrabbit = 0;
+        Sumrabbit = -1;
         FoxSum = -1;
         fos = false;
     }
@@ -196,6 +197,8 @@ public class Main : MonoBehaviour
 
     public void BackMenu()
     {
+        winRabbit.SetActive(false);
+        winFox.SetActive(false);
         if (SceneManager.GetActiveScene().name == "SampleScene") SceneManager.LoadScene("Start");
     }
 
@@ -476,8 +479,9 @@ public class Main : MonoBehaviour
             if (tab) Window_grapg1.SetActive(true);
             else Window_grapg1.SetActive(false);
         }
-        if (Input.GetKeyDown(M))
+        if (Input.GetKeyDown(M) && music == false)
         {
+            music = true;
             GetComponent<AudioSource>().PlayOneShot(BackFon);
         }
         if (escape == true && Input.GetKeyDown(F))

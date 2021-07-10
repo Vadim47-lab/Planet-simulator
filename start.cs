@@ -13,10 +13,10 @@ public class start : MonoBehaviour
     string StringSecond;//количество секунд в виде строки
     string StringMinutes;//количество минут в виде строки
     [Header("AudioClip")]//название типа элемента в программе (вывод аудиоклипа)
-    public AudioClip OpenMenu;
-    public AudioClip CloseMenu;
-    public AudioClip OpenAuthor;
-    public AudioClip CloseAuthor;
+    public AudioClip OpenMenu;//включение звука открытия меню
+    public AudioClip CloseMenu;//включение звука закрытия меню
+    public AudioClip OpenAuthor;//включение звука открытия автора
+    public AudioClip CloseAuthor;//включение звука закрытия автора
     [Header("GameObject")]//название типа элемента в программе (вывод игровых объектов)
     public GameObject Menu;//игровой объект в виде панели для отображения и изменения информации объектов симулятора  public GameObject Window_grapg1;//игровой объект в виде панели для отображения графика об информации в симуляторе
     public GameObject Author1;//игровой объект в виде панели для отображения автора игры
@@ -32,6 +32,7 @@ public class start : MonoBehaviour
     public Button exit;//кнопка: выход из симулятора
     public Button settings;//кнопка: показ настроек игры
     public Button start1;//кнопка: запуск симуляции
+    //public Button level1;//кнопка: запуск симуляции
     public Button close;//кнопка: закрытие панели настройки
     public Button close2;//кнопка: закрытие панели автор
     public Button author;//кнопка: открытие панели автор
@@ -50,9 +51,11 @@ public class start : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1f;
         exit.onClick.AddListener(Exit);
         settings.onClick.AddListener(Settings);
         start1.onClick.AddListener(Start1);
+        //level1.onClick.AddListener(Level1);
         close.onClick.AddListener(Close);
         close2.onClick.AddListener(Close2);
         author.onClick.AddListener(Author);
@@ -145,6 +148,11 @@ public class start : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Start") SceneManager.LoadScene("SampleScene");
     }
 
+   /* public void Level1()
+    {
+        if (SceneManager.GetActiveScene().name == "Start") SceneManager.LoadScene("Level1");
+    }*/
+
     public void Plusspeedgame()
     {
         Main.speedGame++;
@@ -167,15 +175,24 @@ public class start : MonoBehaviour
 
     void Update()
     {
-        GameSeconds = GameSeconds + Time.deltaTime;
-        StringSecond = GameSeconds.ToString();
-        StringMinutes = GameMinutes.ToString();
-        CurrentTime += Time.deltaTime;
+        GameSeconds = GameSeconds + Time.deltaTime + .0f;
+        StringSecond = GameSeconds.ToString("###");
+        if (GameMinutes != 0) StringMinutes = GameMinutes.ToString() + ":";
+        else
+        {
+            StringMinutes = "";
+        }
+            //CurrentTime += Time.deltaTime;
 
-        if (GameSeconds >= 60.0f)
+            if (GameSeconds >= 60.0f)
         {
             GameMinutes = GameMinutes + 1.0f;
             GameSeconds = 0.0f;
+        }
+
+        if (GameMinutes >= 1.0f && GameSeconds >= 30.0f)
+        {
+            if (SceneManager.GetActiveScene().name == "Start") SceneManager.LoadScene("SampleScene");
         }
 
         Speedgame.text = "Скорость симуляции = " + Main.speedGame;
@@ -184,6 +201,6 @@ public class start : MonoBehaviour
         Eatgrass.text = "Количество съеденной травы = " + AI_rabbit.counterGrass;
         Healthfox.text = "Здоровье лисы = " + AI_fox.StartHealth;
         Healthcounter.text = "Количество лис = " + Main.FoxSum;
-        TextTime.text = "Время - " + StringMinutes + ":" + StringSecond;
+        TextTime.text = "Время - " + StringMinutes + StringSecond;
     }
 }

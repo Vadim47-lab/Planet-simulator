@@ -13,44 +13,32 @@ public class AI_rabbit : MonoBehaviour
     private float y = 0;//коррдинаты кролика по оси y
     private int xGrass, yGrass;//коррдинаты травы
     private int counter = 0; //текущий счетчие съеденной травы (никуда не передается)
-    public static int counter2 = 1;//количество кроликов, которое передается в файл Main для дальнейшего вывода на экран
-    public int sumGrass = 0;//количество травы, которое съел кролик
     public static int grassSum = 0;//количество травы для отображения на экран через файл main
     public float Health = 40;//количество здоровья у кролика, которое передается в файл Main для дальнейшего вывода на экран
     public static float counterGrass = 4;//сколько надо съесть травы для размножения
     public static float StartHealth = 40;//количество здоровья у кролика, которое нужно для передачи
     public static int Sumrabbit = 0;//количество кроликов, которое отображается в inspector в unity
-    public static float eatGrass2 = 0;
-    public int Sumgrass = 0;//количество травы, которое отображается в inspector в unity
+    public static float eatGrass2 = 0;//колличество съеденной травы, значение которого берется из скрипта кролика и выводится на экран
     public int randomT;//мозг кролика
     public int random2;//обход камня
     public GameObject rabbit;//игровой объект кролик
     public GameObject game;//пустой игровой объект со скриптом главной логики симулятора
-    public GameObject Graph;
+    public GameObject Graph;//Игровой объект график
     [Header("Button")]//название типа элемента в программе (кнопки)
-    //public Button plusrabbithealth;//кнопка увеличивающая жизнь кролику
-    //public Button minusrabbithealth;//кнопка уменьшающая жизнь кролику
-    //public Button pluseatgrass;//кнопка увеличивающая колличество сЪеденной травы
-    //public Button minuseatgrass;//кнопка уменьшающая колличество сЪеденной травы
     public int maxChild = 4;//сколько кроликов можно родить
     public static int MaxChild = 0;
     public int age = 220;//биологический возраст максимальный
     public static int Age = 0;
-    public BoxCollider hitBox;
-    private NavMeshAgent agent;
-    public GameObject[] targets;
+    public BoxCollider hitBox;//базовый кубический примитив столкновений с врагом
+    private NavMeshAgent agent;//современная технология поиска пути
+    //public GameObject[] targets;//
 
     void Start()
     {
         Main.Sumrabbit++;
         age = 220;
         maxChild = 5;
-        //plusrabbithealth.onClick.AddListener(Plusrabbithealth);
-        //minusrabbithealth.onClick.AddListener(Minusrabbithealth);
-        //pluseatgrass.onClick.AddListener(Pluseatgrass);
-        //minuseatgrass.onClick.AddListener(Minuseatgrass);
-        //xGrass = Random.Range(0, 99);
-        //yGrass = Random.Range(0, 99);
+
         findGrass();
         if (tag != "Spawn") Health = StartHealth;
         InvokeRepeating("brain", 0, 1f);
@@ -132,7 +120,7 @@ public class AI_rabbit : MonoBehaviour
             
         }
         //Sumrabbit = counter2;//для вывода информации в unity в inspector
-        counter2 = Sumrabbit;
+        //counter2 = Sumrabbit;
         Age = age;
         MaxChild = maxChild;
         // List<int> valueList = new List<int>() { 5, 23, 54, 67, 98, 32, 54, 65, 32 };
