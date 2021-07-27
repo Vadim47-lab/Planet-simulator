@@ -74,6 +74,8 @@ public class Main : MonoBehaviour
     public Text Spawn;//субъект для спавна
     [Header("Button")]//название типа элемента в программе (кнопки)
     public Button exit;//кнопка: выход из симулятора
+    public Button exitWinRabbit;//кнопка: выход из симулятора
+    public Button exitWinFox;//кнопка: выход из симулятора
     public Button stop;//кнопка: остановка симулятора
     public Button continue1;//кнопка: возобновление симуляции
     public Button close;//кнопка: закрытие панели информации и ее изменений
@@ -104,6 +106,8 @@ public class Main : MonoBehaviour
     void Start()
     {
         exit.onClick.AddListener(Exit);
+        exitWinRabbit.onClick.AddListener(Exit);
+        exitWinFox.onClick.AddListener(Exit);
         stop.onClick.AddListener(Stop);
         continue1.onClick.AddListener(Continue);
         close.onClick.AddListener(Closemenu);
@@ -495,12 +499,14 @@ public class Main : MonoBehaviour
         {
             Time.timeScale = 0f;
             Window_grapg1.SetActive(false);
+            information.SetActive(false);
             winRabbit.SetActive(true);
         }
         if (AI_fox.eatRabbit == 5)
         {
             Time.timeScale = 0f;
             Window_grapg1.SetActive(false);
+            information.SetActive(false);
             winFox.SetActive(true);
         }
 
