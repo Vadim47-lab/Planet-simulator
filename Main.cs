@@ -181,6 +181,7 @@ public class Main : MonoBehaviour
         //InvokeRepeating("grassRun", grassSpeed, grassSpeed);
         Sumrabbit = -1;
         FoxSum = -1;
+        grassSum1 = 12;
         fos = false;
     }
 
