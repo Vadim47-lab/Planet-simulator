@@ -8,8 +8,8 @@ using Random = UnityEngine.Random;
 
 public class AI_rabbit : MonoBehaviour
 {
-    private float z = 0;//коррдинаты кролика по оси z
-    private float x = 0;//коррдинаты кролика по оси x
+    readonly private float z = 0;//коррдинаты кролика по оси z
+    readonly private float x = 0;//коррдинаты кролика по оси x
     private float y = 0;//коррдинаты кролика по оси y
     private int xGrass, yGrass;//коррдинаты травы
     private int counter = 0; //текущий счетчие съеденной травы (никуда не передается)
@@ -30,7 +30,7 @@ public class AI_rabbit : MonoBehaviour
     public int age = 220;//биологический возраст максимальный
     public static int Age = 0;
     public BoxCollider hitBox;//базовый кубический примитив столкновений с врагом
-    private NavMeshAgent agent;//современная технология поиска пути
+    readonly private NavMeshAgent agent;//современная технология поиска пути
     //public GameObject[] targets;//
 
     void Start()
@@ -39,10 +39,10 @@ public class AI_rabbit : MonoBehaviour
         age = 220;
         maxChild = 5;
 
-        findGrass();
+        FindGrass();
         if (tag != "Spawn") Health = StartHealth;
-        InvokeRepeating("brain", 0, 1f);
-        InvokeRepeating("life", 1f, 1f);
+        InvokeRepeating("Brain", 0, 1f);
+        InvokeRepeating("Life", 1f, 1f);
     }
 
     void Update()
@@ -105,7 +105,7 @@ public class AI_rabbit : MonoBehaviour
             if (counter >= counterGrass)
             {
                 if (tag != "Spawn") Health = StartHealth;
-                create();
+                Create();
                 counter = 0;
                 //counter2++;
                 //Main.Sumrabbit++;
@@ -152,7 +152,7 @@ public class AI_rabbit : MonoBehaviour
         counterGrass--;
     }
 
-    private void brain()
+    private void Brain()
     {
         if (tag != "Spawn") age--;
         if (age == 0)
@@ -195,7 +195,7 @@ public class AI_rabbit : MonoBehaviour
                 if (Main.grass[xGrass, yGrass] == null)//1 раз в секунду в тики брейн вызывает. проверяем не исчезла ли трава, если ее
                                                        //съели, то ищем новую.
                 {
-                    grass = findGrass();
+                    grass = FindGrass();
                 }
                 else
                 {
@@ -225,12 +225,12 @@ public class AI_rabbit : MonoBehaviour
         }
     }
 
-    private void create()
+    private void Create()
     {
         Instantiate(rabbit, transform.position, transform.rotation);
     }
 
-    private void life()
+    private void Life()
     {
          if (tag != "Spawn")
          {
@@ -250,7 +250,7 @@ public class AI_rabbit : MonoBehaviour
         Main.Sumrabbit--;
     }
 
-    private GameObject findGrass()
+    private GameObject FindGrass()
     {
         int i, j;
         float distance;//текущее расстояние от травы до кролика

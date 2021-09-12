@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public class AI_fox: MonoBehaviour
 {
-    private float z = 0;//коррдинаты кролика по оси z
-    private float x = 0;//коррдинаты кролика по оси x
+    readonly private float z = 0;//коррдинаты кролика по оси z
+    readonly private float x = 0;//коррдинаты кролика по оси x
     private float y = 0;//коррдинаты кролика по оси y
     public float Health = 50;//колличество здоровья у лисы
     public static float eatRabbit = 0;
@@ -33,8 +33,8 @@ public class AI_fox: MonoBehaviour
         //GameObject[] rabbits = GameObject.FindGameObjectsWithTag("rabbit");
         //target = rabbits[Random.Range(0, rabbits.Length)];
         y = 0f;
-        InvokeRepeating("brain", 0, 1f);
-        InvokeRepeating("life", 1f, 1f);
+        InvokeRepeating("Brain", 0, 1f);
+        InvokeRepeating("Life", 1f, 1f);
     }
 
     public void Plusfoxhealth()
@@ -54,11 +54,6 @@ public class AI_fox: MonoBehaviour
         Instantiate(fox, transform.position, transform.rotation);
     }
 
-    public void Minusfoxcounter()
-    {
-        //Main.FoxSum--;
-    }
-
     void Update()
     {
         transform.Rotate(x, y, z);
@@ -69,7 +64,7 @@ public class AI_fox: MonoBehaviour
         }
     }
 
-    private void brain()
+    private void Brain()
     {
         if (tag != "Spawn") age--;
         if (age == 0)
@@ -123,7 +118,7 @@ public class AI_fox: MonoBehaviour
         }
     }
 
-    private void life()
+    private void Life()
     {
         if (tag != "Spawn") Health--;
         if (Health <= 0)

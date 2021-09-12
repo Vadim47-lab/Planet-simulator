@@ -8,10 +8,9 @@ public class Main : MonoBehaviour
 {
     public static GameObject[,] grass = new GameObject[100, 100];//матрица элементов травы
     public static GameObject[,] grassFantom = new GameObject[100, 100];//фантомная матрица элементов травы
-    GameObject plant;//закрытый игровой объект травы
+    readonly GameObject plant;//закрытый игровой объект травы
     public static GameObject[,] rock = new GameObject[100, 100];//матрица элементов камней
-    public static GameObject[,] rockFantom = new GameObject[100, 100];//фантомная матрица элементов камней
-    GameObject pebble;//закрытый игровой объект камня
+    readonly GameObject pebble;//закрытый игровой объект камня
     int i, j;//элементы для матрицы
     public GameObject Grass;//игровой объект травы
     public GameObject Rock;//игровой объект травы
@@ -129,54 +128,54 @@ public class Main : MonoBehaviour
         pluseatgrass.onClick.AddListener(Pluseatgrass);
         minuseatgrass.onClick.AddListener(Minuseatgrass);
         Time.timeScale = 1;
-        grassSeeder(50, 50);//cделано чтобы в начале было больше травы
-        grassSeeder(55, 50);
-        grassSeeder(55, 55);
-        grassSeeder(60, 55);
-        grassSeeder(45, 50);
-        grassSeeder(45, 45);
+        GrassSeeder(50, 50);//cделано чтобы в начале было больше травы
+        GrassSeeder(55, 50);
+        GrassSeeder(55, 55);
+        GrassSeeder(60, 55);
+        GrassSeeder(45, 50);
+        GrassSeeder(45, 45);
 
-        grassSeeder(95, 99);
-        grassSeeder(90, 95);
-        grassSeeder(90, 90);
-        grassSeeder(85, 90);
-        grassSeeder(85, 85);
-        grassSeeder(80, 85);
+        GrassSeeder(95, 99);
+        GrassSeeder(90, 95);
+        GrassSeeder(90, 90);
+        GrassSeeder(85, 90);
+        GrassSeeder(85, 85);
+        GrassSeeder(80, 85);
 
         i = 0;//нижняя стена из камней
         for (j = 0; j < 100; j++)
         {
-             rockSeeder(i, j);
+            RockSeeder(i, j);
         }
 
         i = 99;//верхняя стена из камней
         for (j = 0; j < 100; j++)
         {
-            rockSeeder(i, j);
+            RockSeeder(i, j);
         }
 
         j = 0;//правая стена из камней
         for (i = 0; i < 100; i++)
         {
-            rockSeeder(i, j);
+            RockSeeder(i, j);
         }
 
         j = 99;//левая стена из камней
         for (i = 0; i < 100; i++)
         {
-            rockSeeder(i, j);
+            RockSeeder(i, j);
         }
 
         i = 50;//нижняя стена из камней
         for (j = 0; j < 40; j++)
         {
-            rockSeeder(i, j);
+            RockSeeder(i, j);
         }
 
         j = 50;//левая стена из камней
         for (i = 0; i < 50; i++)
         {
-            rockSeeder(i, j);
+            RockSeeder(i, j);
         }
         //InvokeRepeating("grassRun", grassSpeed, grassSpeed);
         Sumrabbit = -1;
@@ -305,33 +304,27 @@ public class Main : MonoBehaviour
         if (screenGrassSpeed > 1) Waring.SetActive(false);
     }
 
-    private void grassSeeder(int x, int y)
+    private void GrassSeeder(int x, int y)
     {
         GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.1f, 0.1f), 0, y * 0.5f + Random.Range(-0.1f, 0.1f)), transform.rotation);
         grass[x, y] = plant; // - трава
         grassSum1++;
     }
 
-    private void grassFantomSeeder(int x, int y)
+    private void GrassFantomSeeder(int x, int y)
     {
         GameObject plant = Instantiate(Grass, new Vector3(x * 0.5f + Random.Range(-0.1f, 0.1f), 0, y * 0.5f + Random.Range(-0.1f, 0.1f)), transform.rotation);
         grassFantom[x, y] = plant; // - трава
         grassSum1++;
     }
 
-    private void rockSeeder(int x, int y)
+    private void RockSeeder(int x, int y)
     {
         GameObject pebble = Instantiate(Rock, new Vector3(x * 0.5f + Random.Range(-0.1f, 0.1f), 0, y * 0.5f + Random.Range(-0.1f, 0.1f)), transform.rotation);
         rock[x, y] = pebble; // - камень
     }
 
-    private void rockFantomSeeder(int x, int y)
-    {
-        GameObject pebble = Instantiate(Rock, new Vector3(x * 0.5f + Random.Range(-0.1f, 0.1f), 0, y * 0.5f + Random.Range(-0.1f, 0.1f)), transform.rotation);
-        rockFantom[x, y] = pebble; // - камень
-    }
-
-    private void grassRun()
+    private void GrassRun()
     {
         for (i = 0; i < 100; i++)
         {
@@ -347,10 +340,10 @@ public class Main : MonoBehaviour
             {
                 if (grass[i, j] != null)
                 {
-                    if (i != 100 - 1) if (grassFantom[i + 1, j] == null) grassFantomSeeder(i + 1, j);
-                    if (i != 0) if (grassFantom[i - 1, j] == null) grassFantomSeeder(i - 1, j);
-                    if (j != 100 - 1) if (grassFantom[i, j + 1] == null) grassFantomSeeder(i, j + 1);
-                    if (j != 0) if (grassFantom[i, j - 1] == null) grassFantomSeeder(i, j - 1);
+                    if (i != 100 - 1) if (grassFantom[i + 1, j] == null) GrassFantomSeeder(i + 1, j);
+                    if (i != 0) if (grassFantom[i - 1, j] == null) GrassFantomSeeder(i - 1, j);
+                    if (j != 100 - 1) if (grassFantom[i, j + 1] == null) GrassFantomSeeder(i, j + 1);
+                    if (j != 0) if (grassFantom[i, j - 1] == null) GrassFantomSeeder(i, j - 1);
                 }
             }
         }
@@ -364,46 +357,13 @@ public class Main : MonoBehaviour
         }
     }
 
-    private void rockRun()
-    {
-        for (i = 0; i < 100; i++)
-        {
-            for (j = 0; j < 100; j++)
-            {
-                rockFantom[i, j] = rock[i, j];
-            }
-        }
-
-        for (i = 0; i < 100; i++)
-        {
-            for (j = 0; j < 100; j++)
-            {
-                if (rock[i, j] != null)
-                {
-                    if (i != 100 - 1) if (rockFantom[i + 1, j] == null) rockFantomSeeder(i + 1, j);
-                    if (i != 0) if (rockFantom[i - 1, j] == null) rockFantomSeeder(i - 1, j);
-                    if (j != 100 - 1) if (rockFantom[i, j + 1] == null) rockFantomSeeder(i, j + 1);
-                    if (j != 0) if (rockFantom[i, j - 1] == null) rockFantomSeeder(i, j - 1);
-                }
-            }
-        }
-
-        for (i = 0; i < 100; i++)//порекомендовали grass.Length
-        {
-            for (j = 0; j < 100; j++)
-            {
-                rock[i, j] = rockFantom[i, j];
-            }
-        }
-    }
-
     void Update()
     {
         grassSpeed = (10 - screenGrassSpeed) * 2;
         time += Time.deltaTime;
         if (time % grassSpeed >= grassSpeed - Time.deltaTime)
         {
-            grassRun();
+            GrassRun();
         }
 
         if (rab == true)
@@ -462,7 +422,7 @@ public class Main : MonoBehaviour
                        // GameObject obj = Instantiate(prefab3, new Vector3(hit.point.x, 0, hit.point.z), Quaternion.identity) as GameObject;
                         xGrass = Mathf.RoundToInt(hit.point.x * 2f) - 1;
                         yGrass = Mathf.RoundToInt(hit.point.z * 2f) - 1;
-                        grassSeeder(xGrass, yGrass);
+                        GrassSeeder(xGrass, yGrass);
                     }
                 }
             }
@@ -530,7 +490,7 @@ public class Main : MonoBehaviour
 
         if (GameSeconds >= 60.0f)
         {
-            GameMinutes = GameMinutes + 1.0f;
+            GameMinutes++;
             GameSeconds = 0.0f;
         }
 
